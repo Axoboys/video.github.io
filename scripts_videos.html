@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mes Scripts Vidéo</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c10;
+    --bg2: #13131a;
+    --bg3: #1a1a24;
+    --border: rgba(255,255,255,0.07);
+    --border-light: rgba(255,255,255,0.13);
+    --text: #e8e6f0;
+    --text-muted: #7a7890;
+    --text-dim: #4a4860;
+    --green: #4ade80;
+    --green-bg: rgba(74,222,128,0.08);
+    --green-border: rgba(74,222,128,0.22);
+    --blue: #60a5fa;
+    --blue-bg: rgba(96,165,250,0.08);
+    --blue-border: rgba(96,165,250,0.22);
+    --amber: #fbbf24;
+    --amber-bg: rgba(251,191,36,0.08);
+    --amber-border: rgba(251,191,36,0.22);
+    --pink: #f472b6;
+    --pink-bg: rgba(244,114,182,0.08);
+    --pink-border: rgba(244,114,182,0.22);
+    --accent: #a78bfa;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .glow-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.15;
+    transition: all 1s ease;
+  }
+  .glow-orb.g1 { width: 600px; height: 600px; background: var(--accent); top: -200px; left: -200px; }
+  .glow-orb.g2 { width: 500px; height: 500px; background: var(--green); bottom: -100px; right: -150px; }
+
+  /* ===================== PAGE SYSTEM ===================== */
+  .page { display: none; position: relative; z-index: 1; }
+  .page.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .page.active { animation: fadeIn 0.4s ease both; }
+
+  /* ===================== TOPBAR ===================== */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 32px;
+    background: rgba(12,12,16,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .topbar-logo span { color: var(--text-muted); font-weight: 400; }
+  .topbar-sep { width: 1px; height: 20px; background: var(--border-light); flex-shrink: 0; }
+  .topbar-crumb {
+    font-size: 13px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .topbar-crumb strong { color: var(--text); font-weight: 600; }
+  .topbar-back {
+    margin-left: auto;
+    flex-shrink: 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    padding: 7px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border-light);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: none;
+    align-items: center;
+    gap: 6px;
+  }
+  .topbar-back:hover { color: var(--text); border-color: rgba(255,255,255,0.3); }
+  .topbar-back.visible { display: flex; }
+
+  /* ===================== HOMEPAGE ===================== */
+  .home-wrapper {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 120px 24px 80px;
+  }
+
+  .home-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(167,139,250,0.1);
+    border: 1px solid rgba(167,139,250,0.25);
+    border-radius: 999px;
+    padding: 5px 14px;
+    margin-bottom: 28px;
+    letter-spacing: 0.08em;
+  }
+  .home-eyebrow::before { content: '◆'; font-size: 8px; }
+
+  .home-title {
+    font-size: clamp(42px, 7vw, 80px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+  .home-title .accent { color: var(--accent); }
+  .home-title .muted { color: var(--text-dim); }
+
+  .home-sub {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 480px;
+    line-height: 1.6;
+    margin-bottom: 60px;
+  }
+
+  /* SCRIPTS GRID */
+  .scripts-section-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .scripts-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .scripts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 60px;
+  }
+
+  .script-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+  }
+  .script-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    border-radius: inherit;
+  }
+  .script-card:hover { border-color: var(--border-light); transform: translateY(-3px); }
+  .script-card:hover::before { opacity: 1; }
+  .script-card:active { transform: translateY(-1px); }
+
+  .card-glow {
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.12;
+    transition: opacity 0.3s;
+  }
+  .script-card:hover .card-glow { opacity: 0.22; }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .card-icon {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .card-status {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    letter-spacing: 0.05em;
+  }
+  .status-ready { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+  .status-soon { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+  .status-empty { background: var(--bg3); color: var(--text-dim); border: 1px solid var(--border); }
+
+  .card-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+  .card-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .card-meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .card-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+  .card-meta-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+  }
+
+  .card-arrow {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--bg3);
+    border: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--text-dim);
+    transition: all 0.2s;
+  }
+  .script-card:hover .card-arrow {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+    transform: translate(2px, -2px);
+  }
+
+  /* ADD CARD */
+  .script-card.add-card {
+    border-style: dashed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 12px;
+    min-height: 200px;
+    cursor: default;
+  }
+  .add-icon {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    background: var(--bg3);
+    border: 1px dashed var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--text-dim);
+  }
+  .add-text {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+  .add-text strong { color: var(--text-muted); display: block; font-size: 14px; margin-bottom: 4px; }
+
+  /* HOME FOOTER */
+  .home-footer {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .home-footer-left {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+  .home-footer-right {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  /* ===================== SCRIPT PAGE ===================== */
+  .script-wrapper {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 100px 24px 80px;
+  }
+
+  header.script-header {
+    padding: 40px 0 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 36px;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(167,139,250,0.1);
+    border: 1px solid rgba(167,139,250,0.25);
+    border-radius: 999px;
+    padding: 5px 14px;
+    margin-bottom: 18px;
+    letter-spacing: 0.08em;
+  }
+  .header-badge::before { content: '◆'; font-size: 8px; }
+
+  h1.script-title {
+    font-size: clamp(32px, 5vw, 58px);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: var(--text);
+  }
+  h1.script-title span { color: var(--accent); }
+
+  .header-sub {
+    margin-top: 12px;
+    font-size: 15px;
+    color: var(--text-muted);
+    font-weight: 400;
+    max-width: 500px;
+    line-height: 1.6;
+  }
+
+  .header-stats {
+    display: flex;
+    gap: 32px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .stat { display: flex; flex-direction: column; gap: 2px; }
+  .stat-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .stat-label { font-size: 12px; color: var(--text-muted); letter-spacing: 0.05em; }
+
+  .progress-section {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .progress-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .progress-bar-outer {
+    flex: 1;
+    min-width: 160px;
+    height: 6px;
+    background: var(--bg3);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent), var(--pink));
+    width: 0%;
+    transition: width 1s ease;
+  }
+  .progress-count {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .phase-nav {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+  .phase-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border-light);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+  }
+  .phase-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
+  .phase-btn.active { color: var(--bg); border-color: transparent; font-weight: 700; background: var(--accent); }
+
+  .search-bar { position: relative; margin-bottom: 28px; }
+  .search-bar input {
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 13px 20px 13px 46px;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-bar input:focus { border-color: var(--border-light); }
+  .search-bar input::placeholder { color: var(--text-dim); }
+  .search-icon {
+    position: absolute;
+    left: 17px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    font-size: 16px;
+  }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+  }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  .phase-block {
+    margin-bottom: 16px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .phase-block:hover { border-color: var(--border-light); }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    background: var(--bg2);
+    user-select: none;
+    transition: background 0.2s;
+  }
+  .phase-header:hover { background: var(--bg3); }
+
+  .phase-indicator { width: 3px; height: 32px; border-radius: 999px; flex-shrink: 0; }
+  .phase-info { flex: 1; }
+  .phase-name { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+  .phase-range-label { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .phase-toggle {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    border: 1px solid var(--border-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: var(--text-muted);
+    transition: all 0.25s; flex-shrink: 0;
+  }
+  .phase-block.open .phase-toggle { transform: rotate(180deg); }
+  .phase-body { display: none; background: var(--bg); }
+  .phase-block.open .phase-body { display: block; }
+
+  .day-card {
+    padding: 18px 20px;
+    border-top: 1px solid var(--border);
+    position: relative;
+    transition: background 0.15s;
+  }
+  .day-card:hover { background: rgba(255,255,255,0.02); }
+
+  .day-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+  .day-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+    letter-spacing: 0.05em;
+  }
+  .day-title-text { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.3; }
+
+  .task-list { padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .task-item {
+    display: flex; gap: 10px;
+    font-size: 13px; color: var(--text-muted);
+    line-height: 1.55; align-items: flex-start;
+  }
+  .task-bullet {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    flex-shrink: 0; margin-top: 6px;
+  }
+  .tip-box {
+    margin-top: 12px; padding: 9px 13px;
+    border-radius: 10px;
+    font-size: 12px; line-height: 1.5;
+    border-left: 3px solid;
+    display: flex; align-items: flex-start; gap: 8px;
+  }
+  .tip-icon { font-size: 12px; flex-shrink: 0; margin-top: 1px; }
+  .day-counter {
+    position: absolute; right: 20px; top: 18px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; color: var(--text-dim);
+  }
+
+  .phase-green .phase-indicator { background: var(--green); }
+  .phase-green .day-tag { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+  .phase-green .tip-box { background: var(--green-bg); color: #86efac; border-color: var(--green); }
+  .phase-green .task-bullet { background: var(--green); }
+  .phase-green.phase-block.open { border-color: var(--green-border); }
+
+  .phase-blue .phase-indicator { background: var(--blue); }
+  .phase-blue .day-tag { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+  .phase-blue .tip-box { background: var(--blue-bg); color: #93c5fd; border-color: var(--blue); }
+  .phase-blue .task-bullet { background: var(--blue); }
+  .phase-blue.phase-block.open { border-color: var(--blue-border); }
+
+  .phase-amber .phase-indicator { background: var(--amber); }
+  .phase-amber .day-tag { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+  .phase-amber .tip-box { background: var(--amber-bg); color: #fcd34d; border-color: var(--amber); }
+  .phase-amber .task-bullet { background: var(--amber); }
+  .phase-amber.phase-block.open { border-color: var(--amber-border); }
+
+  .phase-pink .phase-indicator { background: var(--pink); }
+  .phase-pink .day-tag { background: var(--pink-bg); color: var(--pink); border: 1px solid var(--pink-border); }
+  .phase-pink .tip-box { background: var(--pink-bg); color: #f9a8d4; border-color: var(--pink); }
+  .phase-pink .task-bullet { background: var(--pink); }
+  .phase-pink.phase-block.open { border-color: var(--pink-border); }
+
+  .empty-state {
+    text-align: center; padding: 48px 20px;
+    color: var(--text-muted); font-size: 14px; display: none;
+  }
+
+  #scrollTop {
+    position: fixed; bottom: 28px; right: 28px;
+    width: 44px; height: 44px;
+    background: var(--bg2);
+    border: 1px solid var(--border-light);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted); font-size: 16px;
+    opacity: 0; transition: all 0.3s; z-index: 50;
+  }
+  #scrollTop.visible { opacity: 1; }
+  #scrollTop:hover { color: var(--text); border-color: rgba(255,255,255,0.3); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .phase-block { animation: fadeUp 0.35s ease both; }
+
+  @media (max-width: 600px) {
+    .topbar { padding: 12px 16px; }
+    .home-wrapper { padding: 100px 16px 60px; }
+    .script-wrapper { padding: 90px 16px 60px; }
+    .scripts-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-orb g1"></div>
+<div class="glow-orb g2"></div>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-logo" onclick="goHome()">Scripts<span>.gg</span></div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-crumb" id="topbarCrumb">Accueil</div>
+  <button class="topbar-back" id="topbarBack" onclick="goHome()">← Retour</button>
+</nav>
+
+<!-- ===================== PAGE ACCUEIL ===================== -->
+<div class="page active" id="page-home">
+  <div class="home-wrapper">
+
+    <div class="home-eyebrow">Mes scripts vidéo</div>
+    <h1 class="home-title">
+      Tous tes<br>
+      <span class="accent">scripts</span><br>
+      <span class="muted">au même endroit.</span>
+    </h1>
+    <p class="home-sub">Retrouve tous tes scripts de vidéos organisés ici. Clique sur un script pour le consulter, le parcourir et planifier ton tournage.</p>
+
+    <p class="scripts-section-title">Scripts disponibles</p>
+
+    <div class="scripts-grid" id="scriptsGrid">
+      <!-- Cards injectées en JS -->
+    </div>
+
+    <div class="home-footer">
+      <div class="home-footer-left">Scripts.gg — ton hub de scripts vidéo</div>
+      <div class="home-footer-right">D'autres scripts arrivent bientôt 🎬</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===================== PAGE SCRIPT ===================== -->
+<div class="page" id="page-script">
+  <div class="script-wrapper">
+    <header class="script-header" id="scriptHeader"></header>
+
+    <div class="progress-section">
+      <span class="progress-label">Progression de lecture</span>
+      <div class="progress-bar-outer">
+        <div class="progress-bar-inner" id="readProgress"></div>
+      </div>
+      <span class="progress-count" id="readCount">0 / 0 phases</span>
+    </div>
+
+    <div class="search-bar">
+      <span class="search-icon">⌕</span>
+      <input type="text" id="searchInput" placeholder="Rechercher un jour, une action, une ressource...">
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Survie de base</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Progression</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div>Exploration</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--pink)"></div>Endgame</div>
+    </div>
+
+    <div class="phase-nav" id="phaseNav"></div>
+    <div id="phaseList"></div>
+    <div class="empty-state" id="emptyState">Aucun résultat pour cette recherche.</div>
+
+    <div style="border-top:1px solid var(--border);padding-top:24px;margin-top:48px;text-align:center;font-family:'Space Mono',monospace;font-size:11px;color:var(--text-dim)">
+      Bonne chance en hardcore — tu vas tout déchirer ! 🎮
+    </div>
+  </div>
+</div>
+
+<button id="scrollTop" title="Remonter" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// ===================== DATA =====================
+
+const SCRIPTS = [
+  {
+    id: 'mc100hardcore',
+    title: '100 Jours Hardcore',
+    game: 'Minecraft',
+    desc: 'Script complet jour par jour pour une survie hardcore 100 jours en solo.',
+    icon: '⛏️',
+    iconBg: 'rgba(74,222,128,0.12)',
+    glowColor: '#4ade80',
+    status: 'ready',
+    stats: { days: 100, phases: 6, tasks: 44 },
+    phases: [
+      {
+        id: 'phase1', label: 'Phase 1', range: 'Jours 1–5', color: 'green',
+        title: 'Survie immédiate',
+        days: [
+          {
+            range: 'Jour 1', title: 'Premiers pas & outils en bois',
+            tasks: [
+              'Couper 3–4 arbres dès le spawn pour remplir l\'inventaire de bois brut',
+              'Fabriquer un établi (crafting table) en priorité absolue',
+              'Créer tous les outils en bois : pioche, hache, pelle, épée',
+              'Ramasser de la nourriture : pommes qui tombent des arbres, baies, tuer quelques poulets ou cochons',
+              'Trouver ou creuser un abri simple avant la nuit — une grotte ou un trou dans une colline fait très bien l\'affaire',
+              'Placer la crafting table à l\'intérieur et survivre la première nuit ; dormir si tu trouves de la laine',
+            ],
+            tip: 'Commente à voix haute ta panique si tu entends un creeper la nuit — ça fait du super contenu !'
+          },
+          {
+            range: 'Jour 2', title: 'Pierre & outils solides',
+            tasks: [
+              'Miner 20+ blocs de cobblestone sous l\'abri ou dans une caverne proche',
+              'Upgrader tous les outils en pierre : pioche, épée, hache, pelle',
+              'Fabriquer un four (furnace) et commencer à cuire de la nourriture',
+              'Collecter du charbon naturel ou faire du charbon de bois pour les torches',
+              'Poser des torches autour et à l\'intérieur de l\'abri pour bloquer les spawns nocturnes',
+              'Explorer légèrement autour du spawn pour repérer un village ou des ressources naturelles',
+            ],
+            tip: 'Note mentalement ou marque avec des blocs distinctifs la direction de ton spawn !'
+          },
+          {
+            range: 'Jour 3', title: 'Nourriture & première agriculture',
+            tasks: [
+              'Trouver un village si possible pour récupérer des graines de blé, carottes ou pommes de terre',
+              'Fabriquer une houe en pierre et labourer un carré de terre près d\'une source d\'eau',
+              'Planter du blé, des carottes ou des pommes de terre selon ce que tu as trouvé',
+              'Construire un lit si tu trouves 3 laines en tuant des moutons — permet de skip les nuits',
+              'Étendre l\'abri de base : prévoir une salle de stockage et un espace de craft confortable',
+              'Fabriquer des coffres en bois pour organiser tes ressources dès maintenant',
+            ],
+            tip: 'Le lit est la priorité numéro 1 en hardcore — il évite toutes les nuits dangereuses !'
+          },
+          {
+            range: 'Jours 4–5', title: 'Exploration & descente en mine',
+            tasks: [
+              'Explorer dans un rayon de 200 blocs autour de la base pour cartographier les biomes proches',
+              'Repérer les biomes utiles : désert (temples), jungle (temples), mesa (or en surface)',
+              'Commencer une mine verticale en escalier ou descendre dans une grotte naturelle découverte',
+              'Objectif : atteindre la couche Y=50 et commencer à croiser du minerai de fer',
+              'Collecter au minimum 20 minerais de fer à fondre ensuite au four',
+              'Ramasser du charbon en abondance pendant toute la descente pour ne jamais manquer de torches',
+            ],
+            tip: 'En hardcore, ne jamais descendre dans une grotte sans 10+ torches et de la nourriture en stock !'
+          },
+        ]
+      },
+      {
+        id: 'phase2', label: 'Phase 2', range: 'Jours 6–15', color: 'blue',
+        title: 'Équipement en fer',
+        days: [
+          {
+            range: 'Jours 6–7', title: 'Armure complète en fer',
+            tasks: [
+              'Fondre tout le fer collecté — viser 24+ lingots pour l\'armure complète (24 pièces de fer)',
+              'Fabriquer : casque, plastron, jambières et bottes en fer — protection complète indispensable',
+              'Upgrader les outils clés : pioche en fer et épée en fer sont prioritaires',
+              'Fabriquer un enclume si tu as assez de fer restant (optionnel mais pratique)',
+              'Sécuriser la base avec des murs solides et une porte en fer si possible',
+              'Vérifier que toutes les zones autour de la base sont bien éclairées avec des torches',
+            ],
+            tip: 'L\'armure en fer divise les dégâts reçus par 2 environ — change radicalement la difficulté !'
+          },
+          {
+            range: 'Jours 8–10', title: 'Mine profonde & premiers diamants',
+            tasks: [
+              'Descendre jusqu\'à Y=16 pour les diamants ou Y=11 pour maximiser les chances',
+              'Creuser des galeries longues de 30 blocs avec des branches latérales tous les 2 blocs',
+              'Objectif minimum : 5 à 8 diamants pour fabriquer une pioche et une épée en diamant',
+              'Miner du redstone en passant (pour troquer avec les villageois ou faire de la poudre de redstone)',
+              'Récupérer du lapis en abondance — obligatoire pour enchanter ultérieurement',
+              'Remonter régulièrement à la base pour ne pas tout perdre en cas de mort accidentelle',
+            ],
+            tip: 'En hardcore, toujours remonter avant d\'avoir moins de 5 cœurs — jamais de prise de risque inutile !'
+          },
+          {
+            range: 'Jours 11–13', title: 'Base solide & organisation',
+            tasks: [
+              'Construire une vraie maison en matériaux solides : bois + pierre minimum pour la structure',
+              'Créer une salle de stockage bien organisée avec des coffres rangés par catégorie',
+              'Mettre en place une ferme agricole plus grande : 4 cultures différentes pour varier',
+              'Construire un enclos avec 2 espèces d\'animaux minimum pour une source fiable de nourriture',
+              'Installer une table d\'enchantement et commencer à collecter des étagères de bibliothèque',
+              'Objectif : 15 bibliothèques autour de la table pour atteindre le niveau d\'enchantement 30',
+            ],
+            tip: 'Une base bien organisée = moins de stress = moins de risques de mourir bêtement !'
+          },
+          {
+            range: 'Jours 14–15', title: 'Premiers enchantements',
+            tasks: [
+              'Récolter assez de lapis et d\'XP en tuant des mobs la nuit pour remplir les niveaux',
+              'Enchanter la pioche en fer ou en diamant : viser Efficacité III minimum',
+              'Enchanter l\'épée : Tranchant III pour les mobs en général',
+              'Enchanter les bottes en priorité avec Chute de plume — vital pour survivre aux chutes accidentelles',
+              'Enchanter la tête avec Respiration si tu prévois des plongées dans les monuments marins',
+              'Utiliser l\'enclume pour combiner ou réparer les outils les plus usés',
+            ],
+            tip: 'Chute de plume sur les bottes peut littéralement te sauver la vie dans une falaise ou une mine profonde !'
+          },
+        ]
+      },
+      {
+        id: 'phase3', label: 'Phase 3', range: 'Jours 16–35', color: 'amber',
+        title: 'Diamant & exploration avancée',
+        days: [
+          {
+            range: 'Jours 16–20', title: 'Armure complète en diamant',
+            tasks: [
+              'Continuer la mine profonde jusqu\'à obtenir 24+ diamants pour l\'armure complète',
+              'Fabriquer les 4 pièces d\'armure en diamant : casque, plastron, jambières, bottes',
+              'Fabriquer une épée en diamant et une pioche en diamant — tes outils principaux',
+              'Enchanter l\'armure complète : viser Protection IV sur chaque pièce pour la résistance maximale',
+              'Enchanter la pioche : Efficacité IV + Indestructible III pour une durabilité quasi infinie',
+              'Fabriquer un arc solide et 64+ flèches pour le combat à distance',
+            ],
+            tip: 'Protection IV sur chaque pièce d\'armure en diamant = tu absorbes plus de 80% des dégâts !'
+          },
+          {
+            range: 'Jours 21–25', title: 'Le Nether — première visite',
+            tasks: [
+              'Construire un portail du Nether : 14 blocs d\'obsidienne arrangés en cadre 4×5',
+              'Entrer avec : armure complète, nourriture, des blocs de construction, des lingots d\'or pour les Piglins',
+              'Explorer prudemment en posant des torches à chaque carrefour — ne jamais courir dans l\'inconnu',
+              'Trouver une Forteresse du Nether pour miner les générateurs de blazes et récolter des bâtons',
+              'Tuer des blazes : objectif 6+ bâtons de blaze pour fabriquer l\'alambic',
+              'Récupérer des verrues du Nether (Nether Wart) dans les escaliers de la forteresse',
+              'Ramener de la Netherrack, de la soul sand, du quartz pour les constructions futures',
+            ],
+            tip: 'Marque ton portail avec un bloc bien visible et ne t\'éloigne jamais sans te repérer !'
+          },
+          {
+            range: 'Jours 26–30', title: 'Alchimie & potions essentielles',
+            tasks: [
+              'Construire un alambic (Brewing Stand) avec 3 blocs de cobblestone + 1 bâton de blaze',
+              'Planter des verrues du Nether sur de la soul sand pour en avoir en abondance',
+              'Brasser les potions prioritaires : Régénération II, Force II, Résistance au feu (pour le Nether)',
+              'Améliorer les potions avec de la Redstone pour les rendre longue durée',
+              'Stocker 10 à 15 potions de chaque type dans un coffre dédié avant les boss',
+              'Fabriquer des flèches de potion splash de faiblesse pour convertir les villageois zombies',
+            ],
+            tip: 'Les potions font la différence entre vie et mort face aux boss en hardcore !'
+          },
+          {
+            range: 'Jours 31–35', title: 'Structures & totems',
+            tasks: [
+              'Trouver et piller un temple du désert (attention au piège TNT sous la plaque centrale !)',
+              'Explorer une forteresse de la jungle pour trouver des totems d\'immortalité sur les évocateurs',
+              'Piller un monument marin (Ocean Monument) pour les éponges et les blocs de prisme',
+              'Trouver un village et commercer avec des villageois pour obtenir des ressources rares',
+              'Faire évoluer des villageois jusqu\'au niveau maître pour les meilleurs trades possibles',
+              'Accumuler des émeraudes en masse pour les échanges futurs avec les villageois libraires',
+            ],
+            tip: 'Le totem d\'immortalité dans la main gauche est VITAL en hardcore — il annule une mort certaine !'
+          },
+        ]
+      },
+      {
+        id: 'phase4', label: 'Phase 4', range: 'Jours 36–60', color: 'amber',
+        title: 'Netherite & préparation finale',
+        days: [
+          {
+            range: 'Jours 36–45', title: 'Netherite — l\'équipement ultime',
+            tasks: [
+              'Retourner dans le Nether équipé avec de la TNT ou une pioche Efficacité V',
+              'Miner à la couche Y=15 dans le Nether (la plus efficace pour les débris anciens)',
+              'Objectif : 16 débris anciens minimum pour upgrader toute l\'armure et les outils clés',
+              'Fondre les débris en écailles de Netherite puis combiner 4 écailles + 4 or = 1 lingot',
+              'Utiliser un bloc de forgeron (Smithing Table) pour upgrader chaque pièce d\'armure en Netherite',
+              'Réenchanter la nouvelle armure avec Protection IV + Indestructible III sur chaque pièce',
+            ],
+            tip: 'L\'armure Netherite ne se détruit pas dans la lave — si tu tombes dedans, tu gardes tout !'
+          },
+          {
+            range: 'Jours 46–55', title: 'Automatisation & fermes à XP',
+            tasks: [
+              'Construire une ferme à monstres dans une cave naturelle ou un spawner de donjon trouvé',
+              'Créer une ferme à zombies ou squelettes pour l\'XP et les drops utiles (os, flèches, chair)',
+              'Mettre en place une ferme agricole automatique à pistons pour le blé, carottes et pommes de terre',
+              'Construire une ferme à endermen dans l\'End si tu oses — XP extrêmement rapide',
+              'Automatiser la production de charbon de bois avec un four en chaîne',
+              'Créer un système de tri automatique avec des entonnoirs (hoppers) pour organiser les drops',
+            ],
+            tip: 'Une bonne ferme à XP permet d\'enchanter à l\'infini sans jamais grinder manuellement !'
+          },
+          {
+            range: 'Jours 56–60', title: 'Préparation au combat final',
+            tasks: [
+              'Collecter 12 yeux de l\'Ender : poudre de blaze + perle d\'Ender (drop des Endermen)',
+              'Utiliser les yeux de l\'Ender pour trouver la forteresse principale et localiser le portail de l\'End',
+              'Explorer la forteresse entière pour récupérer ressources et expérience avant le grand combat',
+              'Stocker dans un coffre dédié : 10 potions de Force II, 10 de Régénération, 5 de Résistance au feu',
+              'Préparer des blocs de construction pour accéder aux cristaux de l\'End en hauteur',
+              'Apporter 2 totems d\'immortalité minimum — un dans la main gauche, un dans l\'inventaire',
+            ],
+            tip: 'Ne jamais aller dans l\'End sans au minimum 2 totems d\'immortalité !'
+          },
+        ]
+      },
+      {
+        id: 'phase5', label: 'Phase 5', range: 'Jours 61–90', color: 'pink',
+        title: 'L\'End & au-delà',
+        days: [
+          {
+            range: 'Jours 61–65', title: 'Combat contre l\'Ender Dragon',
+            tasks: [
+              'Entrer dans le portail de l\'End avec toute l\'armure Netherite enchantée et les potions activées',
+              'Priorité absolue : détruire tous les cristaux de l\'End sur les piliers d\'obsidienne',
+              'Pour les cristaux en hauteur : construire une tour de blocs pour les atteindre et les briser à l\'épée',
+              'Attaquer le dragon uniquement quand il plonge vers le portail central — c\'est son seul point faible',
+              'Utiliser l\'arc enchanté Puissance V pour infliger le maximum de dégâts à distance',
+              'Activer les totems si la mort menace — rester méthodique et ne pas paniquer',
+            ],
+            tip: 'Commentaire incontournable pour la vidéo : tuer le dragon après 61 jours de survie acharnée !'
+          },
+          {
+            range: 'Jours 66–75', title: 'Îles extérieures de l\'End',
+            tasks: [
+              'Traverser le portail des îles extérieures qui apparaît après la mort du dragon',
+              'Explorer les vaisseaux de l\'End (End Ships) : ils contiennent toujours une paire d\'Elytra',
+              'Les Elytra sont des ailes de planeur fixées dans la poitrine — absolument indispensables',
+              'Récupérer des têtes de shulker pour les boîtes de shulker (meilleur stockage du jeu)',
+              'Construire des fusées à poudre de blaze pour propulser ton vol avec les Elytra',
+              'Ramener suffisamment de ressources pour financer les projets de construction à venir',
+            ],
+            tip: 'Les Elytra + fusées changent complètement le gameplay — tu traverses le monde en quelques secondes !'
+          },
+          {
+            range: 'Jours 76–90', title: 'Méga constructions & exploration',
+            tasks: [
+              'Choisir un grand projet de construction ambitieux : château, ville en miniature, arène, ferme industrielle',
+              'Automatiser la production de ressources avancées : ferme à creeper pour la poudre, ferme à fer',
+              'Explorer des biomes pas encore visités : Deep Dark, mangrove, Pale Garden',
+              'Tenter le combat contre le Warden si tu veux le défi ultime — extrêmement dangereux',
+              'Décorer et embellir la base principale pour la rendre impressionnante à montrer dans la vidéo',
+              'Construire des routes pavées ou des lignes de rails entre les points clés de ta map',
+            ],
+            tip: 'Les jours de construction sont parfaits pour montrer tes talents de builder !'
+          },
+        ]
+      },
+      {
+        id: 'phase6', label: 'Phase 6', range: 'Jours 91–100', color: 'pink',
+        title: 'Le grand final',
+        days: [
+          {
+            range: 'Jours 91–95', title: 'Défis optionnels & Wither',
+            tasks: [
+              'Rassembler 3 crânes de wither en tuant des squelettes de wither dans la Forteresse du Nether',
+              'Invoquer le Wither dans un endroit sécurisé : sous terre en chambre fermée ou dans l\'End',
+              'Combat contre le Wither : garder les potions de Régénération et la Force II actives en permanence',
+              'Récupérer l\'étoile du Nether pour fabriquer une balise (Beacon)',
+              'Construire la pyramide de la balise et l\'activer pour un boost permanent sur toute la zone de base',
+              'Accomplir d\'autres défis perso : tuer toutes les variantes de mobs, visiter tous les biomes',
+            ],
+            tip: 'Le Wither est encore plus dur que le Dragon — mais c\'est un contenu légendaire pour ta vidéo !'
+          },
+          {
+            range: 'Jours 96–99', title: 'Dernière touche & bilan',
+            tasks: [
+              'Finaliser toutes les constructions en cours pour un rendu visuel propre et impressionnant',
+              'Faire un tour guidé complet de toute la base pour montrer chaque zone aux spectateurs',
+              'Revisiter les lieux clés de l\'aventure : ton premier abri, ta première mine, les boss vaincus',
+              'Mettre à jour les panneaux et les coffres pour une organisation parfaite et présentable',
+              'Préparer le discours de conclusion pour le jour 100 — les émotions comptent beaucoup',
+              'Lister les moments forts à mettre en valeur dans le montage : peurs, victoires, erreurs drôles',
+            ],
+            tip: 'Le tour nostalgique des lieux est toujours un des moments les plus forts dans les vidéos 100 jours !'
+          },
+          {
+            range: 'Jour 100', title: 'Le jour légendaire',
+            tasks: [
+              'Faire un vol panoramique en Elytra au-dessus de toute la map construite pour un plan épique',
+              'Récapituler les grandes aventures de la série : le Nether, le Dragon, le Wither, les structures',
+              'Afficher les statistiques du jeu en screen : mobs tués, blocs minés, km parcourus, temps de jeu',
+              'Organiser un événement final spectaculaire : feux d\'artifice au-dessus de la base',
+              'Discours de conclusion sincère et personnel pour les spectateurs qui ont suivi l\'aventure',
+              'Remercier le public, annoncer la suite si prévue — et laisser le jeu ouvert sur un plan cinématique',
+            ],
+            tip: 'Finir sur un plan en Elytra au coucher de soleil avec les feux d\'artifice = fin de vidéo parfaite !'
+          },
+        ]
+      },
+    ]
+  },
+  {
+    id: 'coming1',
+    title: 'Prochain script',
+    game: '?',
+    desc: 'Un nouveau script de vidéo sera ajouté ici prochainement. Dis à Claude quel type de vidéo tu veux faire !',
+    icon: '🎮',
+    iconBg: 'rgba(251,191,36,0.1)',
+    glowColor: '#fbbf24',
+    status: 'soon',
+    stats: null,
+    phases: null
+  },
+];
+
+// ===================== HOMEPAGE =====================
+
+function renderHome() {
+  const grid = document.getElementById('scriptsGrid');
+  grid.innerHTML = '';
+
+  SCRIPTS.forEach(script => {
+    const card = document.createElement('div');
+    card.className = 'script-card';
+    if (script.status === 'soon') {
+      card.innerHTML = `
+        <div class="card-glow" style="background:${script.glowColor}"></div>
+        <div class="card-top">
+          <div class="card-icon" style="background:${script.iconBg}">${script.icon}</div>
+          <span class="card-status status-soon">Bientôt</span>
+        </div>
+        <div class="card-title">${script.title}</div>
+        <div class="card-desc">${script.desc}</div>
+      `;
+    } else {
+      const totalTasks = script.phases.reduce((acc, p) => acc + p.days.reduce((a, d) => a + d.tasks.length, 0), 0);
+      card.innerHTML = `
+        <div class="card-glow" style="background:${script.glowColor}"></div>
+        <div class="card-top">
+          <div class="card-icon" style="background:${script.iconBg}">${script.icon}</div>
+          <span class="card-status status-ready">Prêt</span>
+        </div>
+        <div class="card-title">${script.title}</div>
+        <div class="card-desc">${script.desc}</div>
+        <div class="card-meta">
+          <div class="card-meta-item"><div class="card-meta-dot" style="background:var(--green)"></div>${script.stats.days} jours</div>
+          <div class="card-meta-item"><div class="card-meta-dot" style="background:var(--blue)"></div>${script.stats.phases} phases</div>
+          <div class="card-meta-item"><div class="card-meta-dot" style="background:var(--accent)"></div>${totalTasks} objectifs</div>
+        </div>
+        <div class="card-arrow">→</div>
+      `;
+      card.addEventListener('click', () => openScript(script.id));
+      card.style.cursor = 'pointer';
+    }
+    grid.appendChild(card);
+  });
+
+  // Add empty slot
+  const addCard = document.createElement('div');
+  addCard.className = 'script-card add-card';
+  addCard.innerHTML = `
+    <div class="add-icon">+</div>
+    <div class="add-text">
+      <strong>Nouveau script</strong>
+      Demande à Claude de créer un nouveau script et il apparaîtra ici
+    </div>
+  `;
+  grid.appendChild(addCard);
+}
+
+// ===================== SCRIPT PAGE =====================
+
+let openPhases = new Set();
+let searchQuery = '';
+let activeFilter = 'all';
+let currentScript = null;
+
+function openScript(id) {
+  currentScript = SCRIPTS.find(s => s.id === id);
+  if (!currentScript || !currentScript.phases) return;
+  openPhases = new Set();
+  searchQuery = '';
+  activeFilter = 'all';
+  document.getElementById('searchInput').value = '';
+
+  renderScriptHeader();
+  renderNav();
+  renderPhases();
+  setTimeout(() => updateProgress(), 300);
+
+  showPage('page-script');
+  document.getElementById('topbarCrumb').innerHTML = `<strong>${currentScript.title}</strong>`;
+  document.getElementById('topbarBack').classList.add('visible');
+  window.scrollTo({ top: 0 });
+}
+
+function renderScriptHeader() {
+  const s = currentScript;
+  const totalTasks = s.phases.reduce((acc, p) => acc + p.days.reduce((a, d) => a + d.tasks.length, 0), 0);
+  document.getElementById('scriptHeader').innerHTML = `
+    <div class="header-badge">${s.game}</div>
+    <h1 class="script-title">${s.title.replace(' ', '<br>')}</h1>
+    <p class="header-sub">${s.desc}</p>
+    <div class="header-stats">
+      <div class="stat"><span class="stat-num">${s.stats.days}</span><span class="stat-label">Jours de survie</span></div>
+      <div class="stat"><span class="stat-num">${s.stats.phases}</span><span class="stat-label">Phases</span></div>
+      <div class="stat"><span class="stat-num">${totalTasks}</span><span class="stat-label">Objectifs détaillés</span></div>
+    </div>
+  `;
+}
+
+function renderNav() {
+  const nav = document.getElementById('phaseNav');
+  nav.innerHTML = '';
+  const allBtn = document.createElement('button');
+  allBtn.className = 'phase-btn active';
+  allBtn.textContent = 'Toutes';
+  allBtn.dataset.phase = 'all';
+  allBtn.addEventListener('click', () => filterPhase('all'));
+  nav.appendChild(allBtn);
+  currentScript.phases.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'phase-btn';
+    btn.textContent = p.label + ' · ' + p.range;
+    btn.dataset.phase = p.id;
+    btn.addEventListener('click', () => filterPhase(p.id));
+    nav.appendChild(btn);
+  });
+}
+
+function filterPhase(id) {
+  activeFilter = id;
+  document.querySelectorAll('.phase-btn').forEach(b => b.classList.toggle('active', b.dataset.phase === id));
+  renderPhases();
+}
+
+function renderPhases() {
+  const container = document.getElementById('phaseList');
+  container.innerHTML = '';
+  const q = searchQuery.toLowerCase();
+  let hasResult = false;
+
+  currentScript.phases.forEach((phase, pi) => {
+    if (activeFilter !== 'all' && phase.id !== activeFilter) return;
+    const matchingDays = phase.days.filter(day => {
+      if (!q) return true;
+      return day.range.toLowerCase().includes(q)
+        || day.title.toLowerCase().includes(q)
+        || day.tasks.some(t => t.toLowerCase().includes(q))
+        || (day.tip && day.tip.toLowerCase().includes(q));
+    });
+    if (matchingDays.length === 0 && q) return;
+    hasResult = true;
+
+    const block = document.createElement('div');
+    block.className = `phase-block phase-${phase.color}`;
+    block.style.animationDelay = (pi * 0.05) + 's';
+    if (openPhases.has(phase.id) || !q) block.classList.add('open');
+
+    const header = document.createElement('div');
+    header.className = 'phase-header';
+    header.innerHTML = `
+      <div class="phase-indicator"></div>
+      <div class="phase-info">
+        <div class="phase-name">${phase.title}</div>
+        <div class="phase-range-label">${phase.label} · ${phase.range}</div>
+      </div>
+      <div class="phase-toggle">▼</div>
+    `;
+
+    const body = document.createElement('div');
+    body.className = 'phase-body';
+
+    (q ? matchingDays : phase.days).forEach(day => {
+      const card = document.createElement('div');
+      card.className = 'day-card';
+      const hi = str => q ? str.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi'), '<mark style="background:rgba(167,139,250,0.3);color:inherit;border-radius:3px;padding:0 2px">$1</mark>') : str;
+      card.innerHTML = `
+        <div class="day-counter">${day.range}</div>
+        <div class="day-header">
+          <span class="day-tag">${day.range}</span>
+          <span class="day-title-text">${hi(day.title)}</span>
+        </div>
+        <ul class="task-list">${day.tasks.map(t => `<li class="task-item"><div class="task-bullet"></div><span>${hi(t)}</span></li>`).join('')}</ul>
+        ${day.tip ? `<div class="tip-box"><span class="tip-icon">💡</span><span>${day.tip}</span></div>` : ''}
+      `;
+      body.appendChild(card);
+    });
+
+    header.addEventListener('click', () => {
+      const isOpen = block.classList.contains('open');
+      block.classList.toggle('open', !isOpen);
+      if (isOpen) openPhases.delete(phase.id);
+      else openPhases.add(phase.id);
+      updateProgress();
+    });
+
+    block.appendChild(header);
+    block.appendChild(body);
+    container.appendChild(block);
+  });
+
+  document.getElementById('emptyState').style.display = hasResult ? 'none' : 'block';
+  updateProgress();
+}
+
+function updateProgress() {
+  const blocks = document.querySelectorAll('.phase-block');
+  const openCount = document.querySelectorAll('.phase-block.open').length;
+  const total = blocks.length;
+  const pct = total ? Math.round(openCount / total * 100) : 0;
+  document.getElementById('readProgress').style.width = pct + '%';
+  document.getElementById('readCount').textContent = `${openCount} / ${total} phases ouvertes`;
+}
+
+// ===================== NAVIGATION =====================
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function goHome() {
+  showPage('page-home');
+  document.getElementById('topbarCrumb').textContent = 'Accueil';
+  document.getElementById('topbarBack').classList.remove('visible');
+  window.scrollTo({ top: 0 });
+}
+
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQuery = e.target.value.trim();
+  renderPhases();
+});
+
+window.addEventListener('scroll', () => {
+  document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 400);
+});
+
+// ===================== INIT =====================
+renderHome();
+</script>
+</body>
+</html>
