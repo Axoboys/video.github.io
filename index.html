@@ -708,7 +708,7 @@
     <header class="script-header" id="scriptHeader"></header>
 
     <div class="progress-section">
-      <span class="progress-label">Progression de lecture</span>
+      <span class="progress-label" id="progressLabel">Progression de lecture</span>
       <div class="progress-bar-outer">
         <div class="progress-bar-inner" id="readProgress"></div>
       </div>
@@ -720,7 +720,7 @@
       <input type="text" id="searchInput" placeholder="Rechercher un jour, une action, une ressource...">
     </div>
 
-    <div class="legend">
+    <div class="legend" id="legendSection">
       <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Survie de base</div>
       <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Progression</div>
       <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div>Exploration</div>
@@ -743,6 +743,712 @@
 // ===================== DATA =====================
 
 const SCRIPTS = [
+  // ===== SCRIPT 1 : L'ENTITÉ INCONNUE =====
+  {
+    id: 'entite_inconnue',
+    title: "L'Entité Inconnue",
+    game: 'Minecraft Storytelling',
+    desc: 'Un joueur seul dans son monde remarque des signes étranges… et réalise qu\'il n\'est peut-être pas seul. Script storytelling complet.',
+    icon: '👁️',
+    iconBg: 'rgba(244,114,182,0.12)',
+    glowColor: '#f472b6',
+    status: 'ready',
+    stats: { days: 8, phases: 5, tasks: 56 },
+    phases: [
+      {
+        id: 'ei_intro', label: 'Partie 1', range: 'Introduction', color: 'green',
+        title: 'Accroche & mise en place',
+        days: [
+          {
+            range: 'Ouverture', title: 'L\'accroche — les 30 premières secondes',
+            tasks: [
+              'Est-ce que vous avez déjà lancé une partie Minecraft en solo… et eu l\'impression que quelqu\'un vous regardait ?',
+              'Pas un mob. Pas une erreur de génération. Quelque chose… d\'autre.',
+              'Aujourd\'hui, je vais vous raconter l\'histoire d\'un joueur qui a vécu ça. Et je vais vous prouver, preuve à l\'appui, que ce qu\'il a vécu… avait une explication. Ou peut-être pas.',
+              'Accrochez-vous. Parce que cette histoire commence exactement comme les vôtres. Un monde tout neuf. Un spawn classique. Et un seul joueur… en apparence.',
+            ],
+            tip: '🎙️ TON : Voix calme, presque chuchotée. Laisse les silences respirer. Pose l\'ambiance dès la première seconde.'
+          },
+          {
+            range: 'Contexte', title: 'Présenter le joueur et son monde',
+            tasks: [
+              'Notre histoire se déroule en 2019. Le joueur s\'appelle Marcus. 17 ans, passionné de Minecraft depuis la bêta, il joue en solo depuis des années.',
+              'Ce jour-là, il crée un nouveau monde. Seed aléatoire. Difficulté normale. Rien d\'exceptionnel.',
+              'Il spawn dans une plaine, construit son premier abri, mine son premier minerai de fer. Une partie comme des centaines d\'autres.',
+              'Mais à partir du troisième jour de jeu… les choses commencent à changer. Très légèrement. Assez pour que Marcus doute de lui-même. Assez pour qu\'il se dise : "J\'ai peut-être mal vu."',
+              'Sauf qu\'il n\'avait pas mal vu. Et vous non plus, quand vous verrez les screenshots.',
+            ],
+            tip: '🎙️ RYTHME : Lent et posé. Ce passage installe la crédibilité. Le spectateur doit sentir que c\'est une vraie histoire, pas une fiction.'
+          },
+        ]
+      },
+      {
+        id: 'ei_premiers_signes', label: 'Partie 2', range: 'Les premiers signes', color: 'blue',
+        title: 'Quelque chose ne va pas',
+        days: [
+          {
+            range: 'Jour 3', title: 'La torche déplacée',
+            tasks: [
+              'Jour 3 de la partie. Marcus rentre dans sa base après une nuit de minage.',
+              'Il avait posé une torche à gauche de sa porte d\'entrée. Juste une. Pour marquer l\'entrée.',
+              'Elle est maintenant à droite.',
+              'Marcus se frotte les yeux. Il recharge sa mémoire. Est-ce qu\'il l\'avait vraiment mise à gauche ? Il pense que oui. Mais il n\'en est pas sûr.',
+              'Il replace la torche à gauche. Il sauvegarde. Il quitte le jeu.',
+              'Le lendemain, il relance la partie. La torche est à droite.',
+              'Sauf que Marcus joue en solo. Il n\'y a aucun autre joueur dans ce monde. Et les mobs ne déplacent pas les torches.',
+            ],
+            tip: '🎙️ EFFET : Répétez "la torche est à droite" deux fois en baissant le ton la deuxième fois. C\'est un détail infime mais il va hanter le spectateur.'
+          },
+          {
+            range: 'Jour 5', title: 'Les coffres réorganisés',
+            tasks: [
+              'Deux jours passent. Marcus essaie d\'oublier l\'histoire de la torche. Il se convainc d\'un bug.',
+              'Jour 5. Il ouvre son coffre principal pour récupérer du fer.',
+              'Ses ressources sont dans un ordre différent. Pas tout mélangé — rangé différemment. Comme si quelqu\'un avait trié ses objets selon une logique autre que la sienne.',
+              'Marcus est organisé. Il range toujours ses minerais en haut à gauche, sa nourriture en bas à droite, ses outils au milieu.',
+              'Là, ses minerais sont en bas. Sa nourriture est en haut. Ses outils sont à droite.',
+              'Il reste assis devant son écran pendant trente secondes sans bouger.',
+              'Puis il commence à filmer. Parce qu\'il sait que personne ne le croira si il ne filme pas.',
+            ],
+            tip: '🎙️ CONSEIL MONTAGE : Si tu peux recréer ces moments en jeu, c\'est ici qu\'il faut montrer les images. L\'effet est décuplé avec du visuel.'
+          },
+          {
+            range: 'Jour 7', title: 'Les traces dans le sol',
+            tasks: [
+              'Deux jours plus tard encore. Marcus explore une zone qu\'il n\'avait jamais visitée, à environ 300 blocs de sa base.',
+              'Il découvre quelque chose qui lui coupe le souffle.',
+              'Des blocs de terre ont été retournés en terre labourée. Pas par lui. Pas à cet endroit. Il n\'était jamais venu là.',
+              'Et sur ces blocs de terre labourée… des pousses. Trois pousses de blé. Plantées en ligne droite.',
+              'Marcus s\'arrête. Il regarde autour de lui. Il n\'y a rien. Pas un mob, pas un son bizarre. Juste le vent du jeu et ces trois pousses de blé qui n\'auraient pas dû être là.',
+              'Quelque chose avait planté du blé dans son monde. À 300 blocs de sa base. Dans une zone qu\'il n\'avait jamais visitée.',
+            ],
+            tip: '🎙️ PAUSE DRAMATIQUE : Faites une pause de 2-3 secondes après "qu\'il n\'avait jamais visitée". Laissez le silence faire le travail.'
+          },
+        ]
+      },
+      {
+        id: 'ei_escalade', label: 'Partie 3', range: 'L\'escalade', color: 'amber',
+        title: 'La présence se manifeste',
+        days: [
+          {
+            range: 'Jour 9', title: 'Le message dans les blocs',
+            tasks: [
+              'Marcus décide de ne pas quitter la partie. Il veut comprendre. Il commence à tout documenter.',
+              'Jour 9. Il explore vers le nord de sa base. Et il tombe sur quelque chose qui lui donne la chair de poule.',
+              'Des blocs de sable, disposés dans une clairière. Formant des lettres.',
+              'Trois lettres. H. E. L. P.',
+              'Marcus screenshot immédiatement. Il tourne la caméra dans tous les sens pour vérifier que c\'est bien là, que ce n\'est pas une illusion de génération de terrain.',
+              'C\'est bien là. Quelqu\'un — ou quelque chose — a écrit HELP avec des blocs de sable dans son monde solo.',
+              'A ce stade, Marcus commence à vraiment avoir peur. Pas peur du jeu. Peur de ce qu\'il ne comprend pas.',
+            ],
+            tip: '🎙️ LIVRAISON : Épélez H-E-L-P lentement. Une lettre à la fois. Avec une pause entre chacune. C\'est le pic émotionnel de cette partie.'
+          },
+          {
+            range: 'Jour 11', title: 'L\'entité aperçue',
+            tasks: [
+              'Marcus installe un logiciel pour enregistrer ses sessions. Il veut capturer ce qui se passe en temps réel.',
+              'Jour 11. Il mine dans une caverne, dos à une paroi. La caméra enregistre.',
+              'En haut à droite de l\'écran, dans l\'obscurité. Une silhouette.',
+              'Elle est là pendant exactement deux secondes. Puis elle disparaît.',
+              'Marcus ne l\'a pas vue en jouant. Il l\'a vue en rembobinant la vidéo le soir.',
+              'La silhouette a la taille d\'un joueur. Elle n\'a aucune texture. Elle est entièrement noire.',
+              'Et elle regarde Marcus. Directement. Pendant deux secondes. Puis elle tourne et s\'en va dans l\'obscurité.',
+            ],
+            tip: '🎙️ MONTAGE : C\'est LE moment à mettre en évidence si tu recréés la scène. Ralenti sur l\'image, zoom progressif, silence, puis musique qui monte.'
+          },
+          {
+            range: 'Jour 13', title: 'La nuit du contact',
+            tasks: [
+              'Marcus poste ses screenshots sur Reddit. Les réponses fusent. Certains disent bug. D\'autres disent fake. Quelques-uns disent : "Continue. Réponds-lui."',
+              'Marcus décide d\'essayer quelque chose. Il place des blocs dans son monde. Pas n\'importe comment.',
+              'Il écrit un mot avec des blocs de bois, au sol, devant sa base.',
+              'Il écrit : QUI.',
+              'Puis il va se coucher dans le jeu. Il attend.',
+              'Le lendemain matin, à côté de son message, il y a une réponse. Trois blocs de pierre. Disposés en triangle.',
+              'Ce n\'est pas une réponse lisible. Mais c\'est une réponse. Et Marcus comprend à cet instant que quelque chose — dans son monde solo — essaie de communiquer avec lui.',
+            ],
+            tip: '🎙️ ÉMOTION : Ici, laissez transparaître un peu d\'émerveillement mêlé de peur. Ce n\'est plus de la terreur, c\'est de la fascination inquiète.'
+          },
+        ]
+      },
+      {
+        id: 'ei_revelation', label: 'Partie 4', range: 'La révélation', color: 'pink',
+        title: 'La vérité derrière l\'entité',
+        days: [
+          {
+            range: 'La vérité', title: 'L\'explication rationnelle — ou presque',
+            tasks: [
+              'Maintenant… je dois vous parler de ce que Marcus a découvert. Et vous aurez le choix d\'y croire ou non.',
+              'Un développeur amateur, en lisant le fil Reddit, lui envoie un message privé.',
+              'Il lui explique une chose fascinante : dans certaines versions de Minecraft, il existe des bugs de génération de monde qui peuvent, dans des conditions très spécifiques, modifier légèrement l\'environnement entre deux sessions.',
+              'Les torches ? Possible. Un bug de rechargement de chunk qui replace les objets proches dans une position alternative sauvegardée.',
+              'Les coffres réorganisés ? Possible aussi. Un problème de synchronisation d\'inventaire avec des données corrompues.',
+              'Le blé planté à 300 blocs ? Là, c\'est plus compliqué. Le développeur dit qu\'il pourrait s\'agir d\'un villageois errant — mais Marcus n\'en avait pas vu.',
+              'Et la silhouette dans la caverne ? Le développeur n\'a pas de réponse. Il dit simplement : "Je n\'ai jamais vu ça. Et je ne sais pas ce que c\'est."',
+            ],
+            tip: '🎙️ TON : Raisonnable, presque journalistique. Donnez l\'explication rationnelle honnêtement. Ça renforce la crédibilité de ce qui ne s\'explique pas.'
+          },
+          {
+            range: 'Le mystère', title: 'Ce qui reste sans explication',
+            tasks: [
+              'Mais voilà ce qui n\'a pas d\'explication.',
+              'Marcus a envoyé sa save à trois modeurs différents. Ils ont analysé les fichiers du monde en profondeur.',
+              'Ils ont trouvé dans les données du monde des traces d\'une entité qui n\'existe pas dans le code vanilla de Minecraft.',
+              'Pas Herobrine. Pas un mod installé par erreur. Une entité avec un identifiant inconnu. Un ID que personne n\'a jamais vu.',
+              'Elle avait des coordonnées. Elle se déplaçait. Elle avait interagi avec des blocs.',
+              'Et puis, la dernière fois qu\'elle avait été enregistrée dans les données du monde… c\'était la nuit où Marcus avait écrit QUI avec ses blocs.',
+              'Après cette nuit-là, l\'entité n\'apparaît plus jamais dans les logs. Comme si elle avait eu sa réponse. Et était partie.',
+            ],
+            tip: '🎙️ LIVRAISON FINALE : Terminez "Et était partie" en baissant presque à un murmure. Puis silence de 3 secondes avant de passer à la conclusion.'
+          },
+        ]
+      },
+      {
+        id: 'ei_conclusion', label: 'Partie 5', range: 'Conclusion', color: 'green',
+        title: 'Clôture & appel à la communauté',
+        days: [
+          {
+            range: 'Conclusion', title: 'Le mot de fin',
+            tasks: [
+              'Est-ce que Marcus a vraiment été suivi par une entité inconnue ? Ou est-ce que tout avait une explication technique qu\'on n\'a simplement pas trouvée ?',
+              'Honnêtement — je ne sais pas. Et je pense que c\'est ce qui rend cette histoire si fascinante.',
+              'Minecraft est un jeu immense, avec un code complexe, des bugs encore non documentés, et des générations de monde imprévisibles.',
+              'Mais il y a aussi des millions de joueurs qui ont vécu des choses inexplicables dans leurs mondes solo. Des choses qu\'ils n\'ont racontées à personne, parce qu\'ils savaient qu\'on ne les croirait pas.',
+              'Alors si vous avez vécu quelque chose d\'étrange dans votre monde Minecraft — une torche déplacée, un coffre réorganisé, une silhouette dans l\'obscurité — dites-le moi en commentaire.',
+              'Parce que peut-être que vous non plus… vous n\'êtes pas vraiment seul.',
+            ],
+            tip: '🎙️ DERNIER MOT : "Peut-être que vous non plus… vous n\'êtes pas vraiment seul." — Dites cette phrase face caméra si possible. Puis coupez directement. Pas d\'outro musicale. Juste le silence.'
+          },
+        ]
+      },
+    ]
+  },
+
+  // ===== SCRIPT 2 : LA FACE CACHÉE DE L'END =====
+  {
+    id: 'face_cachee_end',
+    title: "La Face Cachée de l'End",
+    game: 'Minecraft Storytelling',
+    desc: 'Et si l\'End n\'était pas une dimension à conquérir, mais une prison ? L\'histoire de l\'Ender Dragon vue depuis son point de vue.',
+    icon: '🐉',
+    iconBg: 'rgba(96,165,250,0.12)',
+    glowColor: '#60a5fa',
+    status: 'ready',
+    stats: { days: 8, phases: 5, tasks: 52 },
+    phases: [
+      {
+        id: 'end_intro', label: 'Partie 1', range: 'Introduction', color: 'pink',
+        title: 'Remettre en question ce qu\'on croit savoir',
+        days: [
+          {
+            range: 'Ouverture', title: 'Briser la perspective habituelle',
+            tasks: [
+              'Dans Minecraft, on vous a appris une chose depuis le début : l\'Ender Dragon est le boss final. Le grand méchant. La créature à vaincre pour "finir" le jeu.',
+              'Vous récoltez des perles d\'Ender. Vous trouvez le portail. Vous entrez dans l\'End. Vous tuez le dragon. Vous gagnez.',
+              'Mais est-ce que vous avez déjà pris le temps de vous poser une question simple ?',
+              'Pourquoi est-ce que le dragon ne quitte jamais l\'End ?',
+              'Pourquoi tourne-t-il en rond, encore et encore, au-dessus du même pilier central, dans la même dimension vide ?',
+              'Pourquoi n\'attaque-t-il pas lui-même ? Pourquoi attend-il qu\'on vienne à lui ?',
+              'Aujourd\'hui, je vais vous raconter une théorie. Une théorie construite à partir des indices cachés dans le jeu. Et je pense qu\'à la fin de cette vidéo… vous ne tuerez plus jamais l\'Ender Dragon de la même façon.',
+            ],
+            tip: '🎙️ OUVERTURE : Commencez les trois premières questions en accélérant légèrement le rythme. Elles doivent s\'enchaîner comme un triple coup de poing.'
+          },
+        ]
+      },
+      {
+        id: 'end_lore', label: 'Partie 2', range: 'Le lore caché', color: 'blue',
+        title: 'Ce que le jeu nous dit sans nous le dire',
+        days: [
+          {
+            range: 'Les Endermen', title: 'Qui sont vraiment les Endermen ?',
+            tasks: [
+              'Pour comprendre le dragon, il faut d\'abord comprendre les Endermen. Parce que ces deux-là sont liés. Profondément liés.',
+              'Dans le End, les Endermen ne font rien. Ils errent. Ils se déplacent lentement, portant parfois des blocs de End Stone, les reposant quelque part, sans logique apparente.',
+              'Mais il y a quelque chose que peu de joueurs remarquent : les Endermen ne s\'approchent jamais du dragon. Jamais. Ils maintiennent une distance constante.',
+              'Est-ce de la peur ? Du respect ? Quelque chose d\'autre ?',
+              'La théorie la plus répandue dans la communauté — et celle que je défends aujourd\'hui — c\'est que les Endermen étaient autrefois des humains. Des Endermen qui venaient d\'un monde comme le nôtre.',
+              'Leur peau sombre, leurs yeux violets, leur capacité à téléporter… et surtout leur comportement quand vous les regardez dans les yeux : ils ne veulent pas qu\'on les regarde. Comme si regarder était une agression. Comme si la lumière les blessait.',
+              'Ces créatures-là ne ressemblent pas à des monstres. Elles ressemblent à des êtres traumatisés.',
+            ],
+            tip: '🎙️ RYTHME : La question "Est-ce de la peur ?" doit être posée lentement, avec une vraie interrogation dans la voix. Pas rhétorique — sincère.'
+          },
+          {
+            range: 'Les Cristaux', title: 'Les cristaux de l\'End — des prisons, pas des soins',
+            tasks: [
+              'Maintenant parlons des cristaux. Ces blocs cubiques sur les piliers d\'obsidienne qui régénèrent la vie du dragon pendant le combat.',
+              'En jeu, on vous apprend à les détruire. C\'est une mécanique de combat. Cassez les cristaux, le dragon ne se soigne plus, vous le tuez.',
+              'Mais si on change de perspective… que font vraiment ces cristaux ?',
+              'Ils maintiennent le dragon en vie. Encore et encore. Quand il est blessé, ils le réparent. Quand il essaie de mourir, ils le ramènent.',
+              'Ces cristaux ne soignent pas le dragon par bienveillance. Ils l\'empêchent de mourir. Ils le forcent à rester en vie. Dans cette dimension. Pour toujours.',
+              'Et qui a construit ces piliers d\'obsidienne ? Qui a installé ces cristaux ? Ce n\'est pas le dragon. L\'obsidienne ne se génère pas naturellement en plein air. Quelqu\'un l\'a placée là.',
+              'Quelqu\'un a construit la prison. Quelqu\'un a mis le dragon dedans. Et a installé un système pour qu\'il ne puisse jamais en sortir.',
+            ],
+            tip: '🎙️ EFFET : "Quelqu\'un a construit la prison" — dites-le comme une révélation, pas comme une hypothèse. Conviction totale.'
+          },
+          {
+            range: 'L\'œuf', title: 'L\'œuf de dragon — le symbole ultime',
+            tasks: [
+              'Quand vous tuez l\'Ender Dragon pour la première fois, un œuf apparaît. Au sommet du pilier central. Lumineux, noir, vibrant.',
+              'C\'est la "récompense" du jeu. Un trophée.',
+              'Mais est-ce que vous avez déjà pensé à ce que représente cet œuf ?',
+              'C\'est le dernier enfant du dragon. L\'unique preuve qu\'elle était une mère.',
+              'Parce que dans la mythologie que le jeu construit — jamais explicitement, toujours par indices — le dragon était une créature vivante, dans un monde vivant, avec des petits, une vie, une histoire.',
+              'Et quelqu\'un a pris tout ça. A enfermé le dragon dans le End. A tué ou dispersé ses enfants. Et a laissé un seul œuf — inaccessible, sur son socle — comme un rappel de ce qu\'elle avait perdu.',
+              'L\'œuf ne vous appartient pas. Vous l\'avez volé à quelqu\'un qui souffrait déjà depuis des millénaires.',
+            ],
+            tip: '🎙️ ÉMOTION : Prenez un moment avant "Vous l\'avez volé à quelqu\'un qui souffrait déjà". Ce moment doit toucher le spectateur, pas juste l\'informer.'
+          },
+        ]
+      },
+      {
+        id: 'end_geole', label: 'Partie 3', range: 'La prison', color: 'amber',
+        title: 'Reconstituer ce qui s\'est passé',
+        days: [
+          {
+            range: 'Les Anciens', title: 'Qui a construit cette prison ?',
+            tasks: [
+              'Dans les cités de l\'End — les End Cities, ces structures violettes qu\'on trouve dans les îles extérieures — il y a des Shulkers.',
+              'Les Shulkers sont des créatures défensives, enfermées dans des coquilles, qui tirent des projectiles de lévitation. Ils gardent les cités.',
+              'Mais qui gardent-ils ? La cité est vide. Il n\'y a personne à protéger. Alors pourquoi sont-ils là ?',
+              'La théorie : ils gardent les reliques de la civilisation qui a construit l\'End. Une civilisation ancienne, disparue, qui a utilisé cette dimension comme outil.',
+              'Cette civilisation — appelons-la les Anciens — a développé une technologie suffisamment avancée pour capturer une créature aussi puissante que l\'Ender Dragon.',
+              'Ils ont construit le cadre de portail dans le monde normal. Ils ont créé les Yeux d\'Ender comme clés. Ils ont érigé les piliers dans le End.',
+              'Et pour une raison qu\'on ne connaît pas — peur ? contrôle ? pouvoir ? — ils ont enfermé le dragon. Et puis ils ont disparu. Laissant derrière eux leur prison, leurs gardiens, et leur captive.',
+            ],
+            tip: '🎙️ STRUCTURE : Ce passage est informatif. Parlez clairement, avec des pauses entre chaque élément. Le spectateur doit assembler les pièces avec vous.'
+          },
+          {
+            range: 'La captive', title: 'Des millénaires d\'emprisonnement',
+            tasks: [
+              'Imaginez ce que c\'est. Depuis des millénaires. Tourner en rond. Dans cette dimension vide.',
+              'Pas de proie. Pas de territoire à défendre. Pas d\'horizon à explorer. Juste ce plateau central, ces piliers, et ce vide violet qui s\'étend à l\'infini.',
+              'Les Endermen errent dans la même dimension. Peut-être les fantômes de ceux qu\'elle a connus. Des êtres corrompus par des années dans cette dimension-prison.',
+              'Et personne ne vient. Personne ne peut venir. Les portails sont verrouillés. Les clés sont cachées dans des forteresses enterrées sous des océans.',
+              'Jusqu\'à ce qu\'un jour… un joueur arrive. Avec ses yeux d\'Ender. Et son épée en diamant. Et ses potions.',
+              'Pour le dragon, c\'est peut-être la première présence qu\'elle voit depuis des siècles. Et au lieu de s\'enfuir, elle tourne. Elle tourne encore. Parce qu\'elle ne peut pas faire autrement.',
+              'Elle est prisonnière. Et vous êtes venu… pour la finir.',
+            ],
+            tip: '🎙️ LIVRAISON : "Tourner en rond. Dans cette dimension vide." — Parlez lentement, presque comme si vous viviez vous-même l\'enfermement. Faites sentir le poids du temps.'
+          },
+        ]
+      },
+      {
+        id: 'end_mort', label: 'Partie 4', range: 'Le boss fight revisité', color: 'green',
+        title: 'Ce que le combat signifie vraiment',
+        days: [
+          {
+            range: 'Le combat', title: 'Relire le boss fight autrement',
+            tasks: [
+              'Maintenant relisez le boss fight avec cette perspective. Vous entrez dans le End. Vous détruisez les cristaux — les seules choses qui maintiennent le dragon en vie.',
+              'Le dragon vous attaque. Mais est-ce une agression ? Ou est-ce la défense panique d\'une créature qui a vu d\'autres l\'attaquer avant vous ?',
+              'Regardez son comportement. Elle plonge vers vous, oui. Mais elle ne cherche pas à tuer. Elle frappe et repart. Elle ne vous pourchasse pas dans les coins.',
+              'Un vrai prédateur vous traque. Un être qui se défend… essaie juste de vous tenir à distance.',
+              'Elle souffle. Elle plonge. Elle remonte. Encore et encore. Comme si elle cherchait une issue qui n\'existe pas.',
+              'Et à la fin, quand elle meurt — l\'animation. Regardez l\'animation de sa mort. Elle monte. Elle s\'élève. Son corps se fragmente en lumière.',
+              'Ce n\'est pas une mort. C\'est une libération.',
+            ],
+            tip: '🎙️ PAUSE FORTE : "Ce n\'est pas une mort. C\'est une libération." — Dites ces deux phrases séparément. Silence entre les deux. Ce sont les deux phrases les plus importantes de la vidéo.'
+          },
+          {
+            range: 'Le portail', title: 'Le portail de sortie — la porte de sa cage',
+            tasks: [
+              'Quand le dragon meurt, un portail s\'ouvre. Le portail de retour vers le monde normal.',
+              'On vous présente ça comme votre sortie. Votre récompense.',
+              'Mais si c\'était la porte de sa cage ?',
+              'Le dragon ne peut pas passer par ce portail — vous l\'avez tuée avant. Mais peut-être que si le dragon avait pu mourir de son plein gré, ce portail se serait ouvert pour elle. Pas pour vous.',
+              'Peut-être que les cristaux l\'empêchaient justement de mourir. De choisir la mort plutôt que la prison.',
+              'Et peut-être que votre rôle dans cette histoire — sans le savoir — c\'était de détruire les cristaux. De lui permettre de mourir. De la libérer.',
+              'Vous n\'étiez pas le héros qui tue le monstre. Vous étiez l\'outil qui a ouvert la serrure de la prison.',
+            ],
+            tip: '🎙️ RENVERSEMENT : Ce passage est le pivot émotionnel de la vidéo. Le spectateur doit réaliser que son rôle dans le jeu était l\'opposé de ce qu\'il croyait.'
+          },
+        ]
+      },
+      {
+        id: 'end_conclusion', label: 'Partie 5', range: 'Conclusion', color: 'pink',
+        title: 'Conclusion & réflexion finale',
+        days: [
+          {
+            range: 'Conclusion', title: 'Ce que Minecraft essaie de nous dire',
+            tasks: [
+              'Minecraft ne vous donne jamais la réponse directement. Ce jeu parle en indices. En textures. En comportements de mobs. En structures abandonnées.',
+              'Mais si vous prenez le temps d\'écouter… il raconte une histoire de civilisations perdues, de créatures emprisonnées, et d\'un monde qui a connu des horreurs que vous ne pouvez qu\'imaginer.',
+              'L\'Ender Dragon n\'est pas le boss final. Elle est la dernière victime d\'une civilisation qui a joué à faire Dieu.',
+              'Et nous — les joueurs — on arrive des millénaires plus tard, on casse ses cristaux sans comprendre pourquoi, on la tue sans lui demander son histoire, et on repart avec son œuf sous le bras.',
+              'Alors la prochaine fois que vous entrerez dans le End — et je sais que vous allez y retourner — regardez-la tourner au-dessus du pilier.',
+              'Regardez-la vraiment.',
+              'Et demandez-vous : est-ce que c\'est vraiment moi, le héros de cette histoire ?',
+            ],
+            tip: '🎙️ FIN : Terminez sur "est-ce que c\'est vraiment moi, le héros de cette histoire ?" puis silence absolu pendant 3 secondes. Ne rajoutez rien. Laissez la question flotter.'
+          },
+        ]
+      },
+    ]
+  },
+
+  // ===== SCRIPT 3 : LA BOUCLE =====
+  {
+    id: 'la_boucle',
+    title: 'La Boucle',
+    game: 'Minecraft Storytelling',
+    desc: 'Un joueur se réveille chaque matin au même endroit dans son monde, avec les mêmes ressources. Le monde semble se réinitialiser. Un thriller psychologique dans Minecraft.',
+    icon: '🔁',
+    iconBg: 'rgba(251,191,36,0.12)',
+    glowColor: '#fbbf24',
+    status: 'ready',
+    stats: { days: 9, phases: 5, tasks: 54 },
+    phases: [
+      {
+        id: 'boucle_intro', label: 'Partie 1', range: 'Introduction', color: 'amber',
+        title: 'Planter le décor',
+        days: [
+          {
+            range: 'Ouverture', title: 'L\'accroche — le concept de la boucle',
+            tasks: [
+              'Imaginons un scénario. Vous lancez Minecraft. Vous démarrez une nouvelle partie. Vous survivez votre première nuit.',
+              'Le lendemain matin, vous vous réveillez dans votre lit. Vous ouvrez vos coffres. Vos ressources sont là.',
+              'Vous partez explorer. Vous trouvez des minerais. Vous rentrez. Vous dormez.',
+              'Et le lendemain matin… vous êtes à nouveau dans votre lit. Vos coffres sont exactement comme au premier jour. Tous vos minerais ont disparu.',
+              'Vous recommendencez. Vous récoltez. Vous dormez. Et le lendemain… tout est revenu à zéro.',
+              'Vous êtes coincé dans une boucle. Et la question qui va hanter cette vidéo entière, c\'est : est-ce que c\'est le jeu qui bogue ? Ou est-ce que c\'est vous qui ne comprenez pas les règles ?',
+            ],
+            tip: '🎙️ RYTHME : Les quatre premières phrases doivent être dites rapidement, presque mécaniquement — pour créer l\'effet de routine. Puis ralentissez brutalement sur "et le lendemain… tout est revenu à zéro."'
+          },
+          {
+            range: 'Présentation', title: 'L\'histoire de Soren',
+            tasks: [
+              'Cette histoire est celle de Soren. Vingt-deux ans, développeur web, joueur de Minecraft depuis l\'enfance.',
+              'Il documente ses parties sur un blog personnel. Pas de chaîne YouTube, pas de Twitch. Juste un blog, avec des captures d\'écran et du texte.',
+              'C\'est là qu\'il commence à écrire ce qui lui arrive. Au jour le jour. Avec des screenshots horodatés.',
+              'Ce qui rend cette histoire crédible, c\'est la précision de sa documentation. Il note tout. Les coordonnées. Les inventaires. Les seeds.',
+              'Et ce qu\'il documente… est inexplicable.',
+              'Voici son histoire. Dans l\'ordre. Telle qu\'il l\'a vécue.',
+            ],
+            tip: '🎙️ CRÉDIBILITÉ : Mentionnez le "blog personnel" et les "screenshots horodatés" avec conviction. Ce détail ancre l\'histoire dans quelque chose de tangible.'
+          },
+        ]
+      },
+      {
+        id: 'boucle_debut', label: 'Partie 2', range: 'Les premiers jours', color: 'green',
+        title: 'La boucle s\'installe',
+        days: [
+          {
+            range: 'Jour 1', title: 'Lancement de la partie',
+            tasks: [
+              'Soren lance une nouvelle partie. Seed normale, génération par défaut. Il spawn dans une forêt.',
+              'Il joue quelques heures. Il construit une petite base, mine du fer, fabrique son armure. Une partie ordinaire.',
+              'Il se couche dans son lit ingame. Il sauvegarde. Il quitte.',
+              'Le lendemain, il relance. Il est dans son lit. Sa base est là. Tout est normal.',
+              'Il joue encore quelques heures. Il descend dans une mine, trouve plusieurs diamants. Il revient, satisfait. Il se couche. Il sauvegarde. Il quitte.',
+            ],
+            tip: '🎙️ TON : Neutre, descriptif. Pas encore de tension. Le spectateur doit se dire "OK, partie normale". La tension vient après.'
+          },
+          {
+            range: 'Jour 2', title: 'La première réinitialisation',
+            tasks: [
+              'Le troisième jour, Soren relance sa partie.',
+              'Il est dans son lit.',
+              'Il ouvre son coffre.',
+              'Ses diamants ne sont pas là. Son fer est revenu à la quantité du premier jour. Son inventaire est comme il l\'avait au soir du premier jour.',
+              'Sa mine existe toujours. Les galeries qu\'il a creusées sont là. Mais les ressources qu\'il a ramassées ont disparu.',
+              'Soren croit d\'abord à une erreur de sauvegarde. Il recharge la partie. Rien ne change.',
+              'Il remarque quelque chose d\'autre. La date dans le jeu — le nombre de jours joués — est revenus à 2. Comme s\'il avait passé seulement deux jours dans ce monde.',
+            ],
+            tip: '🎙️ LIVRAISON : "Ses diamants ne sont pas là." — Pause. "Son fer est revenu." — Pause. Chaque constat doit tomber comme un coup.'
+          },
+          {
+            range: 'Jour 5', title: 'Le patron de la boucle',
+            tasks: [
+              'Soren recommence. Il joue avec méthode cette fois. Il note tout dans son blog. Coordonnées de sa mine, quantité exacte de ressources dans chaque coffre.',
+              'Il rejoue les mêmes actions. Mine les mêmes tunnels — qui existent déjà. Ramasse les ressources dans les mêmes zones.',
+              'Le lendemain… réinitialisation. Ses ressources disparaissent. Ses galeries restent.',
+              'Il commence à comprendre le patron. Le monde se réinitialise. Mais pas entièrement. Les structures restent. Les blocs qu\'il a placés restent. Mais les objets dans ses coffres, son inventaire, et le compteur de jours — tout repart.',
+              'Soren a un mot pour ça dans son blog. Il écrit : "Ce monde a une mémoire des lieux. Mais pas des choses. Ni du temps."',
+              'Et puis il se pose la vraie question : est-ce que quelque chose — ou quelqu\'un — réinitialise intentionnellement sa partie ?',
+            ],
+            tip: '🎙️ CITATION : Quand vous citez le blog de Soren, changez légèrement le ton — comme si vous lisiez ses mots. Ça donne de la profondeur au personnage.'
+          },
+        ]
+      },
+      {
+        id: 'boucle_escalade', label: 'Partie 3', range: 'L\'escalade', color: 'blue',
+        title: 'Briser la boucle',
+        days: [
+          {
+            range: 'Tentative', title: 'Les expériences de Soren',
+            tasks: [
+              'Soren devient obsessionnel. Il commence à tester les limites de la boucle.',
+              'Il place des blocs spécifiques dans des coordonnées précises. Il vérifie au lendemain. Les blocs sont là. La boucle ne touche pas aux blocs placés.',
+              'Il remplit un coffre jusqu\'à ras bord et ne quitte jamais le jeu ce soir-là. Il reste connecté toute la nuit dans son monde. Le matin… tout est là. Pas de réinitialisation.',
+              'La réinitialisation ne se produit que quand il quitte et relance la partie.',
+              'Il essaie de ne pas se coucher dans son lit in-game. Juste se connecter, jouer, ne pas dormir, ne pas quitter. Le monde reste intact.',
+              'Mais à un moment, il doit dormir — pour que le temps in-game avance, pour que les mobs despawn. Et quand il se relève le matin in-game et quitte le jeu ce soir-là… le lendemain, réinitialisation.',
+              'La boucle est liée au lit. À l\'acte de dormir. C\'est là le déclencheur.',
+            ],
+            tip: '🎙️ STRUCTURE : Listez les expériences comme un scientifique. Hypothèse, test, résultat. Cette rigueur renforce l\'immersion.'
+          },
+          {
+            range: 'Le message', title: 'Le signe dans les blocs',
+            tasks: [
+              'Après dix cycles de boucle, Soren fait quelque chose d\'impulsif.',
+              'Il construit un message au sol, devant sa base, avec des blocs de laine colorée.',
+              'Il écrit : JE SAIS QUE TU FAIS ÇA.',
+              'Il se couche. Il quitte. Il relance.',
+              'La laine est encore là. Son message est intact.',
+              'Et juste à côté… deux nouveaux blocs ont été placés. De la laine noire. Formant deux lettres.',
+              'OUI.',
+              'Soren est resté sans voix devant son écran pendant plusieurs minutes. Il l\'a écrit dans son blog. "Je ne sais pas ce que c\'est. Je ne sais pas d\'où ça vient. Mais quelque chose m\'a répondu."',
+            ],
+            tip: '🎙️ DRAMATISATION : "OUI." — Dites ce mot seul. Une pause avant. Une pause après. C\'est le pic de tension de cette vidéo.'
+          },
+          {
+            range: 'La boucle se brise', title: 'Le dernier cycle',
+            tasks: [
+              'Après la réponse, Soren essaie une dernière chose.',
+              'Il construit un lit dans son monde. Mais au lieu de dormir dedans, il le détruit.',
+              'Sans lit, il ne peut pas dormir. Et sans sommeil in-game, les nuits durent. Les monstres arrivent. Mais la boucle ne peut pas se déclencher.',
+              'Il joue toute une nuit in-game. Survit aux zombies, aux squelettes. La nuit passe. L\'aube se lève.',
+              'Il quitte le jeu. Le lendemain, il relance.',
+              'Ses ressources sont là. Toutes. Son compteur de jours n\'a pas reculé.',
+              'La boucle est brisée. En détruisant le lit, il a supprimé le déclencheur. La boucle n\'a plus de prise sur lui.',
+            ],
+            tip: '🎙️ LIBÉRATION : Ce passage doit sonner comme une victoire. Après toute la tension accumulée, laissez filtrer un peu de soulagement dans votre voix.'
+          },
+        ]
+      },
+      {
+        id: 'boucle_explication', label: 'Partie 4', range: 'La vérité', color: 'amber',
+        title: 'Comprendre ce qui s\'est passé',
+        days: [
+          {
+            range: 'Analyse', title: 'L\'explication technique',
+            tasks: [
+              'Alors, que s\'est-il vraiment passé ?',
+              'Soren a contacté plusieurs experts Minecraft après avoir publié son histoire. Et la réponse technique est fascinante.',
+              'Dans certaines versions de Minecraft Java, il existe un bug rare lié à la gestion des points de spawn et des sauvegardes.',
+              'Quand le joueur dort dans un lit, le jeu enregistre les données d\'inventaire et de progression d\'une certaine façon. Si un fichier de sauvegarde est corrompu partiellement — pas assez pour crasher le jeu, juste assez pour affecter certaines données — le jeu peut charger une version antérieure de l\'inventaire tout en gardant les modifications de terrain.',
+              'En d\'autres termes : votre monde physique avance, mais votre inventaire "rebondit" vers un état antérieur. La boucle n\'était pas intentionnelle. C\'était une corruption de sauvegarde très précise.',
+              'Quant aux messages de laine noire qui lui avaient répondu OUI ? Soren a fouillé ses logs de connexion. Une autre session du jeu avait été ouverte depuis son propre ordinateur, la nuit précédente. Son jeune frère, apparemment.',
+            ],
+            tip: '🎙️ DÉFLATION CONTRÔLÉE : Donnez l\'explication rationnelle honnêtement. Mais gardez quelque chose en réserve pour la suite.'
+          },
+          {
+            range: 'Ce qui reste', title: 'Ce que la technique n\'explique pas',
+            tasks: [
+              'Mais voilà ce que l\'explication technique ne couvre pas.',
+              'Soren a analysé ses sauvegardes après coup. Le bug de corruption ne peut provoquer ce type de boucle que dans des conditions très spécifiques.',
+              'La corruption doit affecter exactement les bons fichiers, dans exactement le bon ordre, au bon moment.',
+              'Les experts qui ont regardé ses fichiers de sauvegarde ont dit une chose : la probabilité que cette corruption se produise exactement comme elle l\'a fait, sur exactement ce monde, pendant exactement cette période… est statistiquement proche de zéro.',
+              'Pas impossible. Juste… extraordinairement improbable.',
+              'Et une chose reste sans réponse. Avant que son frère lui réponde OUI avec de la laine noire… Soren avait fait un test dont il n\'avait parlé à personne.',
+              'Il avait posé une question. Pas dans le jeu. Pas sur son blog. Il l\'avait posée à voix haute, tout seul dans sa chambre, devant son écran.',
+              'Il avait dit : "Tu es là ?"',
+            ],
+            tip: '🎙️ CHUTE FINALE : La dernière phrase doit être dite doucement, presque comme un aveu. Puis silence complet. C\'est le vrai cliffhanger de la vidéo.'
+          },
+        ]
+      },
+      {
+        id: 'boucle_conclusion', label: 'Partie 5', range: 'Conclusion', color: 'pink',
+        title: 'Clôture',
+        days: [
+          {
+            range: 'Conclusion', title: 'Le mot de fin — la boucle du temps',
+            tasks: [
+              'La boucle s\'est arrêtée quand Soren a détruit son lit. Quand il a supprimé le déclencheur.',
+              'Mais si on réfléchit à ce que cette histoire dit sur Minecraft… il y a quelque chose de poétique dans la boucle.',
+              'Minecraft est un jeu sans fin. Sans objectif imposé. Vous pouvez jouer indéfiniment. Vous pouvez construire, détruire, recommencer.',
+              'Dans un sens, chaque nouvelle partie est une boucle. Vous recommencez toujours du même point de départ. Un nouveau monde. Des mains vides. Une nuit qui approche.',
+              'La boucle de Soren n\'était peut-être pas un bug. C\'était peut-être le jeu qui lui montrait, très littéralement, ce qu\'il fait depuis des années sans s\'en rendre compte.',
+              'Recommencer. Encore et encore. Parce que le voyage vaut plus que l\'arrivée.',
+              'Et si vous vous êtes déjà demandé pourquoi vous relancez une nouvelle partie alors que vous n\'avez pas fini la précédente… vous connaissez déjà la réponse.',
+            ],
+            tip: '🎙️ CONCLUSION : Cette fin est philosophique et bienveillante. Après toute la tension, terminez sur une note douce et réfléchie. Sourire discret dans la voix.'
+          },
+        ]
+      },
+    ]
+  },
+
+  // ===== SCRIPT 4 : LE DERNIER JOUEUR =====
+  {
+    id: 'dernier_joueur',
+    title: 'Le Dernier Joueur',
+    game: 'Minecraft Storytelling',
+    desc: 'Dans un futur proche, Minecraft ferme ses serveurs. Une fiction sur le dernier joueur encore connecté, et ce que ça dit de notre attachement aux mondes virtuels.',
+    icon: '🌅',
+    iconBg: 'rgba(167,139,250,0.12)',
+    glowColor: '#a78bfa',
+    status: 'ready',
+    stats: { days: 9, phases: 5, tasks: 55 },
+    phases: [
+      {
+        id: 'dj_intro', label: 'Partie 1', range: 'Introduction', color: 'green',
+        title: 'Le scénario du futur',
+        days: [
+          {
+            range: 'Ouverture', title: 'La question qui commence tout',
+            tasks: [
+              'Où étiez-vous la première fois que vous avez joué à Minecraft ?',
+              'Dans votre chambre ? Chez un ami ? Dans une salle informatique au collège ?',
+              'Est-ce que vous vous souvenez du premier monde que vous avez créé ? Du premier arbre que vous avez coupé ?',
+              'De votre première nuit ? De votre première mort ?',
+              'Ces souvenirs existent quelque part. Dans une save quelque part sur un vieux disque dur. Ou perdu dans le temps.',
+              'Mais imaginez quelque chose. Imaginez qu\'un jour — pas demain, peut-être pas dans dix ans, mais un jour — Minecraft s\'arrête.',
+              'Les serveurs s\'éteignent. Les saves online disparaissent. Et le dernier message du launcher dit : "Merci d\'avoir joué."',
+              'Que ferait le dernier joueur encore connecté ?',
+            ],
+            tip: '🎙️ OUVERTURE : Posez les premières questions doucement, comme si vous parliez à vous-même. Ce sont des questions personnelles et le spectateur doit se les approprier.'
+          },
+          {
+            range: 'Contexte', title: 'Présenter le scénario — 2041',
+            tasks: [
+              'Nous sommes en 2041. Minecraft a 32 ans.',
+              'Le jeu a traversé des générations. Des enfants qui jouaient avec leurs parents jouent maintenant avec leurs propres enfants.',
+              'Mais les temps ont changé. Les nouvelles plateformes de réalité virtuelle ont pris le dessus. La plupart des studios de jeux classiques ont fermé ou migré vers des formats immersifs.',
+              'Mojang — devenu une division d\'une méga-corporation tech — annonce l\'arrêt définitif des serveurs Minecraft le 1er mars 2041.',
+              'L\'annonce provoque une vague de nostalgie massive. Des milliers de joueurs se reconnectent pour une dernière session. Des vidéos de "goodbye Minecraft" inondent les réseaux.',
+              'Mais progressivement, ils s\'en vont. Un par un.',
+              'Et à 23h58 le 28 février 2041… il ne reste plus qu\'un seul joueur connecté.',
+            ],
+            tip: '🎙️ NARRATION : Prenez le ton d\'un documentariste. Factuel, légèrement mélancolique. Comme si vous racontiez un événement historique.'
+          },
+        ]
+      },
+      {
+        id: 'dj_joueur', label: 'Partie 2', range: 'Le dernier joueur', color: 'blue',
+        title: 'Qui est-il ?',
+        days: [
+          {
+            range: 'Profil', title: 'Présenter Elena',
+            tasks: [
+              'Ce joueur s\'appelle Elena. Soixante-sept ans. Retraitée. Elle vit dans une petite maison dans la campagne espagnole.',
+              'Elle a découvert Minecraft en 2013. Son fils lui avait montré le jeu pendant les vacances de Noël.',
+              'Son fils avait quatorze ans. Elena en avait trente-neuf. Elle avait trouvé le jeu étrange mais fascinant.',
+              'En 2015, son fils est parti à l\'université. La maison est devenue silencieuse. Elena a relancé Minecraft.',
+              'Pas pour construire des châteaux. Pas pour battre le dragon. Juste… pour être dans un monde où quelque chose poussait, se construisait, évoluait.',
+              'Elle a joué presque tous les jours pendant vingt-six ans. Son monde s\'appelle "La Finca" — le domaine.',
+              'Et ce soir, elle est la dernière à ne pas vouloir partir.',
+            ],
+            tip: '🎙️ HUMANITÉ : Elena n\'est pas un joueur hardcore. Elle est quelqu\'un d\'ordinaire qui a trouvé quelque chose d\'important dans ce jeu. Rendez-la réelle, pas symbolique.'
+          },
+          {
+            range: 'Le monde', title: 'La Finca — 26 ans de construction',
+            tasks: [
+              'La Finca existe depuis 2015. Vingt-six ans de jeu. C\'est difficile à imaginer.',
+              'Elena n\'a jamais construit pour impressionner. Pas de mégastructures. Pas de pixel art géant.',
+              'Elle a construit une ferme. Une vraie ferme, à son échelle. Avec des champs de blé organisés par saison. Un potager. Un verger.',
+              'Elle a construit une maison qui ressemble à celle où elle a grandi, dans un village andalou. Avec la terrasse, le puits, les pots de fleurs en façade.',
+              'Elle a construit un chemin qui descend vers un lac. Et au bord du lac, un petit banc en bois. Elle s\'y asseyait le soir, en regardant le soleil se coucher sur les pixels.',
+              'Elle a construit un cimetière, au fond du domaine. Avec des pierres tombales pour chaque créature qu\'elle avait apprivoisée et perdue.',
+              'La Finca n\'est pas un chef-d\'œuvre architectural. C\'est une vie. Vingt-six ans de vie, encodés en blocs.',
+            ],
+            tip: '🎙️ DESCRIPTION : Soyez précis et doux dans la description de La Finca. Chaque détail — les pots de fleurs, le banc, le cimetière — doit toucher émotionnellement.'
+          },
+        ]
+      },
+      {
+        id: 'dj_derniere_nuit', label: 'Partie 3', range: 'La dernière nuit', color: 'amber',
+        title: 'Les deux dernières heures',
+        days: [
+          {
+            range: '22h00', title: 'Elena commence son tour',
+            tasks: [
+              'Il est 22h00. Elena sait que les serveurs ferment à minuit. Elle a deux heures.',
+              'Elle commence par ce qu\'elle fait toujours en fin de session. Elle fait le tour de La Finca.',
+              'Elle visite les champs. Elle ramasse quelques légumes qu\'elle ne replante pas — à quoi bon, cette fois ?',
+              'Elle va voir ses animaux. Ses vaches, ses moutons, ses poules. Elle les a tous nommés, d\'une façon ou d\'une autre.',
+              'Elle s\'arrête devant le cimetière. Elle lit les noms sur les pierres. Des créatures qui avaient vécu dans ce monde et que personne d\'autre qu\'elle ne connaissait.',
+              'Et elle pense à son fils. Qui ne joue plus depuis des années. Qui ne sait peut-être même pas que c\'est la dernière nuit.',
+            ],
+            tip: '🎙️ LENTEUR : Ce passage doit être lent. Presque contemplatif. Vous racontez une promenade d\'adieu. Chaque lieu doit avoir du poids.'
+          },
+          {
+            range: '23h00', title: 'La lettre dans le livre',
+            tasks: [
+              'À 23h00, Elena ouvre son inventaire. Elle prend un livre et une plume.',
+              'Dans Minecraft, les livres permettent d\'écrire du texte. Elena en a plusieurs dans ses coffres — des recettes, des notes, des souvenirs.',
+              'Ce soir, elle écrit une lettre.',
+              'Elle écrit à son fils. Dans le livre. Dans le jeu.',
+              'Elle lui dit qu\'elle a passé les vingt-six meilleures années de sa vie dans ce monde. Qu\'elle ne le lui avait jamais dit.',
+              'Elle lui dit que le jour où il lui avait montré le jeu, au Noël 2013, c\'est le dernier souvenir qu\'elle a de lui enfant. Et que chaque fois qu\'elle lançait Minecraft, elle retrouvait un peu de ce moment.',
+              'Elle signe la lettre. Elle la pose dans un coffre. Au milieu de la maison. Là où son fils avait mis son premier coffre, le soir de Noël, pour lui montrer comment ça marche.',
+            ],
+            tip: '🎙️ ÉMOTION : C\'est le passage le plus émotionnel de la vidéo. Ne forcez pas. Parlez doucement, presque intimement. Si vous avez l\'impression d\'en faire trop, vous êtes au bon niveau.'
+          },
+          {
+            range: '23h50', title: 'Les dix dernières minutes',
+            tasks: [
+              'À 23h50, Elena monte sur le toit de sa maison. L\'endroit où elle va toujours regarder le coucher de soleil.',
+              'Il reste dix minutes.',
+              'Elle ne fait rien. Elle regarde. Les champs. Le lac. Le chemin qui descend vers l\'eau. Le cimetière au loin.',
+              'Elle a passé plus de temps dans ce monde que dans certains endroits réels de sa vie.',
+              'Le ciel du jeu est en train de passer à l\'orange. Le soleil Minecraft se couche lentement.',
+              'Et à 23h58, un message système apparaît dans le coin de l\'écran. "Les serveurs fermeront dans 2 minutes. Merci d\'avoir joué."',
+              'Elena ne bouge pas. Elle attend. Elle regarde le soleil toucher l\'horizon.',
+              'À minuit pile, l\'écran devient noir.',
+              'Et La Finca cesse d\'exister.',
+            ],
+            tip: '🎙️ CLIMAX SILENCIEUX : Chaque phrase de ce passage doit être courte. Séparée. "Elle attend. Elle regarde." Pas de lyrisme. Juste les faits. La simplicité fera le travail.'
+          },
+        ]
+      },
+      {
+        id: 'dj_apres', label: 'Partie 4', range: 'L\'après', color: 'pink',
+        title: 'Ce que ça veut dire',
+        days: [
+          {
+            range: 'Le lendemain', title: 'La vraie vie d\'Elena après minuit',
+            tasks: [
+              'Le 1er mars 2041, Elena referme son ordinateur.',
+              'Elle va dans sa cuisine. Elle se fait un café.',
+              'Elle appelle son fils pour la première fois depuis plusieurs semaines.',
+              'Elle lui dit que Minecraft est fermé. Il dit qu\'il sait. Il dit qu\'il est désolé. Elle dit que ce n\'est pas grave.',
+              'Ils parlent pendant une heure. De leur Noël 2013. De la première nuit qu\'ils avaient passée ensemble dans le jeu, à essayer de survivre aux zombies.',
+              'Son fils lui dit qu\'il avait gardé une copie de La Finca. Il avait téléchargé sa save deux jours avant la fermeture. Pour la conserver.',
+              'Elena n\'avait pas su que c\'était possible.',
+              'Elle pleure. Son fils pleure aussi. Et le monde qui semblait avoir disparu… existe encore. Quelque part. Sur un disque dur. En attendant d\'être relancé.',
+            ],
+            tip: '🎙️ RÉSOLUTION : Cette scène est la résolution émotionnelle. Après toute la mélancolie, il y a de la lumière. Laissez-la briller sans forcer.'
+          },
+          {
+            range: 'La question', title: 'Ce que cette histoire dit sur les mondes virtuels',
+            tasks: [
+              'Est-ce qu\'un monde virtuel peut être réel ? Est-ce que La Finca d\'Elena était un vrai lieu ?',
+              'Physiquement, non. C\'était des données. Des bits organisés sur des serveurs.',
+              'Mais émotionnellement ? Elena y avait passé vingt-six ans. Elle y avait pensé à son fils. Elle y avait pleuré ses animaux morts. Elle y avait trouvé de la paix dans les moments difficiles.',
+              'Est-ce que ces expériences étaient moins réelles parce qu\'elles se passaient dans un jeu ?',
+              'Je ne pense pas. Et je pense que la plupart d\'entre vous savent de quoi je parle.',
+              'Parce que vous avez tous un monde Minecraft quelque part. Une forteresse, une ferme, un skyblock. Un endroit que vous avez construit et qui vous ressemble.',
+              'Et si on vous disait que demain, ce monde disparaît… vous sauriez exactement ce que ressent Elena.',
+            ],
+            tip: '🎙️ UNIVERSALITÉ : Ce passage doit résonner avec CHAQUE spectateur. Parlez lentement. Laissez les questions s\'installer. Ne répondez pas trop vite.'
+          },
+        ]
+      },
+      {
+        id: 'dj_conclusion', label: 'Partie 5', range: 'Conclusion', color: 'green',
+        title: 'Le mot de la fin',
+        days: [
+          {
+            range: 'Conclusion', title: 'Ce que Minecraft nous laisse',
+            tasks: [
+              'Minecraft a maintenant plus de quinze ans. Et il n\'est pas près de s\'arrêter.',
+              'Mais un jour, toutes les choses s\'arrêtent. C\'est une réalité que même les mondes virtuels ne peuvent pas esquiver.',
+              'Ce qui restera, c\'est ce qu\'on y a vécu. Les nuits passées à construire avec un ami. Les premières découvertes. Les moments où le jeu nous a appris quelque chose sur nous-mêmes.',
+              'Elena a passé vingt-six ans à construire une ferme pixelisée. Et à travers cette ferme, elle a gardé un lien avec son fils, traversé des années de solitude, et créé quelque chose qui lui ressemblait.',
+              'Ce n\'est pas rien. C\'est exactement ce que les meilleurs jeux font. Ils vous donnent un espace pour être vous-même. Pour construire, pour échouer, pour recommencer.',
+              'Alors si vous avez un monde Minecraft quelque part — vieux ou récent, grand ou petit — sauvegardez-le. Parce qu\'il y a une version de vous là-dedans.',
+              'Et les versions de nous-mêmes méritent d\'être gardées.',
+            ],
+            tip: '🎙️ FIN : Terminez sur "Et les versions de nous-mêmes méritent d\'être gardées." Dites-le face caméra, avec conviction. Puis laissez le silence. C\'est votre outro.'
+          },
+        ]
+      },
+    ]
+  },
+
+  // ===== SCRIPT ORIGINAL =====
   {
     id: 'mc100hardcore',
     title: '100 Jours Hardcore',
@@ -1080,18 +1786,24 @@ function renderHome() {
       `;
     } else {
       const totalTasks = script.phases.reduce((acc, p) => acc + p.days.reduce((a, d) => a + d.tasks.length, 0), 0);
+      const isStorytelling = script.game === 'Minecraft Storytelling';
       card.innerHTML = `
         <div class="card-glow" style="background:${script.glowColor}"></div>
         <div class="card-top">
           <div class="card-icon" style="background:${script.iconBg}">${script.icon}</div>
-          <span class="card-status status-ready">Prêt</span>
+          <span class="card-status status-ready">${isStorytelling ? 'Storytelling' : 'Prêt'}</span>
         </div>
         <div class="card-title">${script.title}</div>
         <div class="card-desc">${script.desc}</div>
         <div class="card-meta">
-          <div class="card-meta-item"><div class="card-meta-dot" style="background:var(--green)"></div>${script.stats.days} jours</div>
-          <div class="card-meta-item"><div class="card-meta-dot" style="background:var(--blue)"></div>${script.stats.phases} phases</div>
-          <div class="card-meta-item"><div class="card-meta-dot" style="background:var(--accent)"></div>${totalTasks} objectifs</div>
+          ${isStorytelling
+            ? `<div class="card-meta-item"><div class="card-meta-dot" style="background:var(--pink)"></div>30–60 min</div>
+               <div class="card-meta-item"><div class="card-meta-dot" style="background:var(--blue)"></div>${script.stats.phases} parties</div>
+               <div class="card-meta-item"><div class="card-meta-dot" style="background:var(--accent)"></div>${totalTasks} répliques</div>`
+            : `<div class="card-meta-item"><div class="card-meta-dot" style="background:var(--green)"></div>${script.stats.days} jours</div>
+               <div class="card-meta-item"><div class="card-meta-dot" style="background:var(--blue)"></div>${script.stats.phases} phases</div>
+               <div class="card-meta-item"><div class="card-meta-dot" style="background:var(--accent)"></div>${totalTasks} objectifs</div>`
+          }
         </div>
         <div class="card-arrow">→</div>
       `;
@@ -1134,6 +1846,21 @@ function openScript(id) {
   renderPhases();
   setTimeout(() => updateProgress(), 300);
 
+  const isStorytelling = currentScript.game === 'Minecraft Storytelling';
+  document.getElementById('legendSection').innerHTML = isStorytelling
+    ? `<div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Introduction</div>
+       <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Développement</div>
+       <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div>Climax</div>
+       <div class="legend-item"><div class="legend-dot" style="background:var(--pink)"></div>Révélation</div>`
+    : `<div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Survie de base</div>
+       <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Progression</div>
+       <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div>Exploration</div>
+       <div class="legend-item"><div class="legend-dot" style="background:var(--pink)"></div>Endgame</div>`;
+  document.getElementById('progressLabel').textContent = isStorytelling ? 'Script lu' : 'Progression de lecture';
+  document.getElementById('searchInput').placeholder = isStorytelling
+    ? 'Rechercher une réplique, une partie, un moment...'
+    : 'Rechercher un jour, une action, une ressource...';
+
   showPage('page-script');
   document.getElementById('topbarCrumb').innerHTML = `<strong>${currentScript.title}</strong>`;
   document.getElementById('topbarBack').classList.add('visible');
@@ -1143,14 +1870,20 @@ function openScript(id) {
 function renderScriptHeader() {
   const s = currentScript;
   const totalTasks = s.phases.reduce((acc, p) => acc + p.days.reduce((a, d) => a + d.tasks.length, 0), 0);
+  const isStorytelling = s.game === 'Minecraft Storytelling';
   document.getElementById('scriptHeader').innerHTML = `
     <div class="header-badge">${s.game}</div>
     <h1 class="script-title">${s.title.replace(' ', '<br>')}</h1>
     <p class="header-sub">${s.desc}</p>
     <div class="header-stats">
-      <div class="stat"><span class="stat-num">${s.stats.days}</span><span class="stat-label">Jours de survie</span></div>
-      <div class="stat"><span class="stat-num">${s.stats.phases}</span><span class="stat-label">Phases</span></div>
-      <div class="stat"><span class="stat-num">${totalTasks}</span><span class="stat-label">Objectifs détaillés</span></div>
+      ${isStorytelling
+        ? `<div class="stat"><span class="stat-num">30–60</span><span class="stat-label">Minutes de vidéo</span></div>
+           <div class="stat"><span class="stat-num">${s.stats.phases}</span><span class="stat-label">Grandes parties</span></div>
+           <div class="stat"><span class="stat-num">${totalTasks}</span><span class="stat-label">Répliques scriptées</span></div>`
+        : `<div class="stat"><span class="stat-num">${s.stats.days}</span><span class="stat-label">Jours de survie</span></div>
+           <div class="stat"><span class="stat-num">${s.stats.phases}</span><span class="stat-label">Phases</span></div>
+           <div class="stat"><span class="stat-num">${totalTasks}</span><span class="stat-label">Objectifs détaillés</span></div>`
+      }
     </div>
   `;
 }
