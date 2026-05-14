@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vision Board — La Boucle</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #18181f;
+    --border: rgba(255,255,255,0.06);
+    --border-mid: rgba(255,255,255,0.12);
+    --text: #eeedf5;
+    --muted: #6b6880;
+    --dim: #3a384a;
+    --purple: #9b8cf7;
+    --purple-bg: rgba(155,140,247,0.08);
+    --purple-border: rgba(155,140,247,0.2);
+    --teal: #3dd9a4;
+    --teal-bg: rgba(61,217,164,0.07);
+    --teal-border: rgba(61,217,164,0.2);
+    --amber: #f5a623;
+    --amber-bg: rgba(245,166,35,0.07);
+    --amber-border: rgba(245,166,35,0.2);
+    --pink: #f06292;
+    --pink-bg: rgba(240,98,146,0.07);
+    --pink-border: rgba(240,98,146,0.2);
+    --gray-bg: rgba(255,255,255,0.04);
+    --gray-border: rgba(255,255,255,0.1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(130px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.12;
+  }
+  .orb1 { width: 700px; height: 700px; background: var(--purple); top: -250px; left: -250px; }
+  .orb2 { width: 500px; height: 500px; background: var(--teal); bottom: -150px; right: -150px; }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 60px 28px 80px;
+  }
+
+  /* HEADER */
+  .header {
+    margin-bottom: 56px;
+    border-bottom: 1px solid var(--border-mid);
+    padding-bottom: 40px;
+  }
+  .header-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--purple);
+    background: var(--purple-bg);
+    border: 1px solid var(--purple-border);
+    border-radius: 999px;
+    padding: 5px 14px;
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+  }
+  .header-eyebrow::before { content: '◆'; font-size: 7px; }
+  .header-title {
+    font-size: clamp(48px, 8vw, 88px);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    margin-bottom: 16px;
+  }
+  .header-title .accent { color: var(--purple); }
+  .header-title .muted { color: var(--dim); }
+  .header-sub {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.6;
+  }
+  .header-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+  .meta-pill {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .meta-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+  }
+
+  /* SECTION TITLES */
+  .section-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    margin-top: 52px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .section-title:first-of-type { margin-top: 0; }
+
+  /* CARDS GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+  .grid-2 {
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  }
+
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover {
+    border-color: var(--border-mid);
+    transform: translateY(-2px);
+  }
+
+  .card-accent-purple { border-left: 2px solid var(--purple); border-radius: 0 18px 18px 0; }
+  .card-accent-teal { border-left: 2px solid var(--teal); border-radius: 0 18px 18px 0; }
+  .card-accent-amber { border-left: 2px solid var(--amber); border-radius: 0 18px 18px 0; }
+  .card-accent-pink { border-left: 2px solid var(--pink); border-radius: 0 18px 18px 0; }
+
+  .card-icon {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+  .icon-purple { background: var(--purple-bg); }
+  .icon-teal { background: var(--teal-bg); }
+  .icon-amber { background: var(--amber-bg); }
+  .icon-pink { background: var(--pink-bg); }
+  .icon-gray { background: var(--gray-bg); }
+
+  .card-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+  .card-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    display: inline-block;
+    letter-spacing: 0.04em;
+  }
+  .tag-purple { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+  .tag-teal { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-border); }
+  .tag-amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+  .tag-pink { background: var(--pink-bg); color: var(--pink); border: 1px solid var(--pink-border); }
+  .tag-gray { background: var(--gray-bg); color: var(--muted); border: 1px solid var(--gray-border); }
+
+  /* TIMELINE */
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .tl-item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .tl-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 36px;
+  }
+  .tl-dot {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .tl-line {
+    width: 1px;
+    flex: 1;
+    min-height: 24px;
+    background: var(--border);
+    margin: 4px 0;
+  }
+  .tl-content {
+    padding-bottom: 28px;
+    padding-top: 6px;
+    flex: 1;
+  }
+  .tl-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    margin-bottom: 4px;
+    letter-spacing: 0.06em;
+  }
+  .tl-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 5px;
+    letter-spacing: -0.01em;
+  }
+  .tl-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .tl-item:last-child .tl-content { padding-bottom: 0; }
+
+  .dot-purple { background: var(--purple-bg); color: var(--purple); }
+  .dot-teal { background: var(--teal-bg); color: var(--teal); }
+  .dot-amber { background: var(--amber-bg); color: var(--amber); }
+  .dot-pink { background: var(--pink-bg); color: var(--pink); }
+  .dot-gray { background: var(--gray-bg); color: var(--muted); }
+
+  /* HIGHLIGHT CARD */
+  .highlight-card {
+    background: var(--bg2);
+    border: 1px solid var(--purple-border);
+    border-radius: 18px;
+    padding: 28px 32px;
+    margin-top: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .highlight-card::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    background: var(--purple);
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.07;
+  }
+  .highlight-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--purple);
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    font-size: 10px;
+  }
+  .highlight-card-text {
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.7;
+    font-style: italic;
+    position: relative;
+  }
+  .highlight-card-text::before {
+    content: '"';
+    font-size: 48px;
+    color: var(--purple);
+    opacity: 0.3;
+    font-family: Georgia, serif;
+    line-height: 1;
+    display: block;
+    margin-bottom: -12px;
+  }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .footer-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+  }
+  .footer-logo span { color: var(--purple); }
+  .footer-right {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.06em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .wrapper > * {
+    animation: fadeUp 0.5s ease both;
+  }
+  .wrapper > *:nth-child(2) { animation-delay: 0.05s; }
+  .wrapper > *:nth-child(3) { animation-delay: 0.1s; }
+  .wrapper > *:nth-child(4) { animation-delay: 0.15s; }
+  .wrapper > *:nth-child(5) { animation-delay: 0.2s; }
+  .wrapper > *:nth-child(6) { animation-delay: 0.25s; }
+  .wrapper > *:nth-child(7) { animation-delay: 0.3s; }
+  .wrapper > *:nth-child(8) { animation-delay: 0.35s; }
+
+  @media (max-width: 600px) {
+    .wrapper { padding: 40px 18px 60px; }
+    .grid { grid-template-columns: 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .header-title { font-size: 52px; }
+  }
+</style>
+</head>
+<body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-eyebrow">Vision Board · Minecraft Storytelling</div>
+    <h1 class="header-title">
+      La<br>
+      <span class="accent">Boucle</span>
+    </h1>
+    <p class="header-sub">Guide visuel et sonore complet pour la réalisation de la vidéo. Scènes clés, sons, structure narrative et effets de montage.</p>
+    <div class="header-meta">
+      <div class="meta-pill"><div class="meta-dot" style="background:var(--purple)"></div>8 scènes clés</div>
+      <div class="meta-pill"><div class="meta-dot" style="background:var(--teal)"></div>6 ambiances sonores</div>
+      <div class="meta-pill"><div class="meta-dot" style="background:var(--amber)"></div>7 étapes narratives</div>
+      <div class="meta-pill"><div class="meta-dot" style="background:var(--pink)"></div>4 effets montage</div>
+    </div>
+  </div>
+
+  <!-- SCÈNES -->
+  <div class="section-title">Scènes à filmer / recréer en jeu</div>
+  <div class="grid">
+
+    <div class="card card-accent-purple">
+      <div class="card-icon icon-purple">🛏️</div>
+      <div class="card-label">Le lit — 3 fois identique</div>
+      <div class="card-desc">Filmer le même lit exactement pareil à chaque cycle. Même angle, même lumière, même plan. La répétition doit être évidente.</div>
+      <span class="tag tag-purple">Scène clé</span>
+    </div>
+
+    <div class="card card-accent-purple">
+      <div class="card-icon icon-purple">📦</div>
+      <div class="card-label">Le coffre qui se vide</div>
+      <div class="card-desc">Coffre plein → cut brutal → coffre vide. Même plan, même angle. Aucune transition. Juste le cut. L'effet est immédiat.</div>
+      <span class="tag tag-purple">Scène clé</span>
+    </div>
+
+    <div class="card card-accent-purple">
+      <div class="card-icon icon-purple">⛏️</div>
+      <div class="card-label">Les galeries vides</div>
+      <div class="card-desc">Tunnels déjà creusés mais sans ressources. Montrer le vide après la boucle. Le monde garde sa forme mais perd son contenu.</div>
+      <span class="tag tag-purple">Scène clé</span>
+    </div>
+
+    <div class="card card-accent-teal">
+      <div class="card-icon icon-teal">✍️</div>
+      <div class="card-label">"JE SAIS QUE TU FAIS ÇA"</div>
+      <div class="card-desc">Message en laine colorée au sol. Zoom lent dessus. Laisser le plan respirer. Ne pas couper trop vite.</div>
+      <span class="tag tag-teal">Tension</span>
+    </div>
+
+    <div class="card card-accent-teal">
+      <div class="card-icon icon-teal">⬛</div>
+      <div class="card-label">"OUI" en laine noire</div>
+      <div class="card-desc">Zoom très lent. Aucun son. Silence absolu. 4 à 5 secondes de zoom minimum. C'est le pic de tension de toute la vidéo.</div>
+      <span class="tag tag-teal">Climax</span>
+    </div>
+
+    <div class="card card-accent-amber">
+      <div class="card-icon icon-amber">🔢</div>
+      <div class="card-label">Compteur de jours</div>
+      <div class="card-desc">Afficher "Jour 2" qui revient en boucle à l'écran entre chaque cycle. Overlay simple, police monospace, discret mais visible.</div>
+      <span class="tag tag-amber">Montage</span>
+    </div>
+
+    <div class="card card-accent-amber">
+      <div class="card-icon icon-amber">📝</div>
+      <div class="card-label">Le blog de Soren</div>
+      <div class="card-desc">Simuler un écran de blog avec screenshots horodatés. Glisser dessus en overlay pour ancrer la crédibilité de l'histoire.</div>
+      <span class="tag tag-amber">Montage</span>
+    </div>
+
+    <div class="card card-accent-pink">
+      <div class="card-icon icon-pink">🗑️</div>
+      <div class="card-label">Détruire le lit</div>
+      <div class="card-desc">Plan au ralenti sur la destruction du lit. C'est la libération après toute la tension. Doit être visuellement satisfaisant.</div>
+      <span class="tag tag-pink">Résolution</span>
+    </div>
+
+  </div>
+
+  <!-- HIGHLIGHT -->
+  <div class="highlight-card">
+    <div class="highlight-card-title">⚡ Le moment le plus important</div>
+    <div class="highlight-card-text">Le "OUI" doit être le moment le plus silencieux et le plus lent de toute la vidéo. Pas de musique, pas d'effet sonore, pas de voix. Juste le zoom. Le silence fait tout le travail.</div>
+  </div>
+
+  <!-- SONS -->
+  <div class="section-title">Sons & musiques</div>
+  <div class="grid">
+
+    <div class="card card-accent-purple">
+      <div class="card-icon icon-purple">🎵</div>
+      <div class="card-label">Intro — routine mécanique</div>
+      <div class="card-desc">Musique minimaliste répétitive, presque irritante. Piano ou synthé simple en boucle courte. Le spectateur doit ressentir la boucle avant qu'on l'explique.</div>
+      <span class="tag tag-purple">Ambiance</span>
+    </div>
+
+    <div class="card card-accent-purple">
+      <div class="card-icon icon-purple">〰️</div>
+      <div class="card-label">Ambient glitch</div>
+      <div class="card-desc">Sons légèrement distordus pendant les moments de boucle. Chercher "glitch ambient" ou "loop drone" sur YouTube Audio Library.</div>
+      <span class="tag tag-purple">Effet</span>
+    </div>
+
+    <div class="card card-accent-teal">
+      <div class="card-icon icon-teal">🔇</div>
+      <div class="card-label">Le "OUI" — silence total</div>
+      <div class="card-desc">Zéro musique. Zéro effet. Silence absolu. C'est le son le plus puissant de la vidéo. Ne pas mettre de musique pour "remplir le vide".</div>
+      <span class="tag tag-teal">Son clé</span>
+    </div>
+
+    <div class="card card-accent-teal">
+      <div class="card-icon icon-teal">🔄</div>
+      <div class="card-label">Son de "reset"</div>
+      <div class="card-desc">Un son court et net à chaque début de boucle. Peut être le son de chargement Minecraft retravaillé, ou un son de "tick" grave.</div>
+      <span class="tag tag-teal">Effet</span>
+    </div>
+
+    <div class="card card-accent-amber">
+      <div class="card-icon icon-amber">📈</div>
+      <div class="card-label">Montée progressive</div>
+      <div class="card-desc">La musique s'intensifie doucement entre la partie 1 et la révélation. Pas de saut brutal — une progression lente sur plusieurs minutes.</div>
+      <span class="tag tag-amber">Structure</span>
+    </div>
+
+    <div class="card card-accent-pink">
+      <div class="card-icon icon-pink">🌅</div>
+      <div class="card-label">Conclusion — doux et ouvert</div>
+      <div class="card-desc">Musique calme, presque espoir. Contraste fort avec la tension accumulée. Piano seul ou ambient chaud. Sourire dans la voix.</div>
+      <span class="tag tag-pink">Ambiance</span>
+    </div>
+
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="section-title">Structure narrative — dans l'ordre</div>
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-left">
+        <div class="tl-dot dot-purple">▶</div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-num">Étape 1</div>
+        <div class="tl-title">Ouverture mécanique</div>
+        <div class="tl-desc">Voix rapide, répétitive. Plans identiques du lit, des coffres, de la mine. Musique en boucle courte. Le spectateur doit se sentir pris dans la routine avant même qu'elle soit expliquée.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left">
+        <div class="tl-dot dot-teal">👤</div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-num">Étape 2</div>
+        <div class="tl-title">Présentation de Soren</div>
+        <div class="tl-desc">Montrer le blog simulé en overlay. Ton journalistique, posé. Screenshots horodatés pour ancrer la crédibilité. Pas encore de tension, juste de la curiosité.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left">
+        <div class="tl-dot dot-amber">🔄</div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-num">Étape 3</div>
+        <div class="tl-title">Les cycles (jours 1 → 5)</div>
+        <div class="tl-desc">Répéter les mêmes plans à chaque boucle. Compteur de jours visible à l'écran. La tension monte progressivement. La musique commence à dériver légèrement.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left">
+        <div class="tl-dot dot-pink">✍️</div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-num">Étape 4</div>
+        <div class="tl-title">Le message + "OUI"</div>
+        <div class="tl-desc">Silence total. Zoom lent sur la laine noire. Pause longue après le mot. C'est le climax. Ne pas mettre de son. Ne pas couper trop tôt. Laisser le silence travailler.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left">
+        <div class="tl-dot dot-teal">💡</div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-num">Étape 5</div>
+        <div class="tl-title">Explication technique</div>
+        <div class="tl-desc">Ton calme, presque journalistique. Montrer les fichiers de save en overlay. Donner l'explication honnêtement — puis introduire ce qui reste inexplicable.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left">
+        <div class="tl-dot dot-amber">🎙️</div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-num">Étape 6</div>
+        <div class="tl-title">"Tu es là ?" — face caméra</div>
+        <div class="tl-desc">Briser le 4ème mur. Parler directement au spectateur. Voix très basse, presque un murmure. Long silence après. C'est le vrai cliffhanger de la vidéo.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-left">
+        <div class="tl-dot dot-purple">∞</div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-num">Étape 7</div>
+        <div class="tl-title">Conclusion — la boucle boucle</div>
+        <div class="tl-desc">Terminer sur exactement la même phrase qu'à l'ouverture : "Imaginons un scénario. Vous lancez Minecraft." Couper direct. Aucune outro musicale. Juste le silence — et le spectateur comprend.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MONTAGE -->
+  <div class="section-title">Effets de montage essentiels</div>
+  <div class="grid grid-2">
+
+    <div class="card">
+      <div class="card-icon icon-gray">✂️</div>
+      <div class="card-label">Cut brutal</div>
+      <div class="card-desc">Coffre plein → coffre vide. Aucune transition, aucun fondu. Juste le cut sec. L'effet est immédiat et viscéral.</div>
+      <span class="tag tag-gray">Montage</span>
+    </div>
+
+    <div class="card">
+      <div class="card-icon icon-gray">⚡</div>
+      <div class="card-label">Glitch vidéo</div>
+      <div class="card-desc">Petit effet de freeze + glitch visuel à chaque début de boucle. 0.5 seconde maximum — ne pas en faire trop.</div>
+      <span class="tag tag-gray">Montage</span>
+    </div>
+
+    <div class="card">
+      <div class="card-icon icon-gray">🔍</div>
+      <div class="card-label">Zoom très lent</div>
+      <div class="card-desc">Sur le "OUI" en laine noire. Doit durer 4 à 5 secondes minimum pour créer l'angoisse. Ne pas accélérer, ne pas couper.</div>
+      <span class="tag tag-gray">Montage</span>
+    </div>
+
+    <div class="card">
+      <div class="card-icon icon-gray">📄</div>
+      <div class="card-label">Overlay texte citations</div>
+      <div class="card-desc">Citations du blog de Soren en overlay simple. Police monospace, blanc cassé, bas de l'écran. Discret mais percutant.</div>
+      <span class="tag tag-gray">Montage</span>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-logo"><span>◆</span> Vision Board · La Boucle</div>
+    <div class="footer-right">Minecraft Storytelling</div>
+  </div>
+
+</div>
+</body>
+</html>
