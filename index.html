@@ -121,9 +121,36 @@
     display: none;
     align-items: center;
     gap: 6px;
+    text-decoration: none;
   }
   .topbar-back:hover { color: var(--text); border-color: rgba(255,255,255,0.3); }
   .topbar-back.visible { display: flex; }
+
+  .topbar-ideas {
+    flex-shrink: 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    padding: 7px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(167,139,250,0.35);
+    background: rgba(167,139,250,0.1);
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+  }
+  .topbar-ideas:hover {
+    background: rgba(167,139,250,0.18);
+    border-color: rgba(167,139,250,0.6);
+    color: #c4b5fd;
+    transform: translateY(-1px);
+    box-shadow: 0 0 12px rgba(167,139,250,0.2);
+  }
+  .topbar-ideas::before { content: '✦'; font-size: 9px; }
 
   /* ===================== HOMEPAGE ===================== */
   .home-wrapper {
@@ -673,7 +700,7 @@
   <div class="topbar-logo" onclick="goHome()">Scripts<span>.gg</span></div>
   <div class="topbar-sep"></div>
   <div class="topbar-crumb" id="topbarCrumb">Accueil</div>
-  <button class="topbar-back" id="topbarBack"><a href="IdéeBoucle.html">Idées</a></button>
+  <a class="topbar-ideas" href="IdéeBoucle.html">Idées</a>
   <button class="topbar-back" id="topbarBack" onclick="goHome()">← Retour</button>
 </nav>
 
@@ -1097,7 +1124,7 @@ const SCRIPTS = [
     iconBg: 'rgba(251,191,36,0.12)',
     glowColor: '#fbbf24',
     status: 'ready',
-    stats: { days: 9, phases: 5, tasks: 54 },
+    stats: { days: 9, phases: 7, tasks: 89 },
     phases: [
       {
         id: 'boucle_intro', label: 'Partie 1', range: 'Introduction', color: 'amber',
@@ -1110,10 +1137,23 @@ const SCRIPTS = [
               'Le lendemain matin, vous vous réveillez dans votre lit. Vous ouvrez vos coffres. Vos ressources sont là.',
               'Vous partez explorer. Vous trouvez des minerais. Vous rentrez. Vous dormez.',
               'Et le lendemain matin… vous êtes à nouveau dans votre lit. Vos coffres sont exactement comme au premier jour. Tous vos minerais ont disparu.',
-              'Vous recommendencez. Vous récoltez. Vous dormez. Et le lendemain… tout est revenu à zéro.',
+              'Vous recommencez. Vous récoltez. Vous dormez. Et le lendemain… tout est revenu à zéro.',
               'Vous êtes coincé dans une boucle. Et la question qui va hanter cette vidéo entière, c\'est : est-ce que c\'est le jeu qui bogue ? Ou est-ce que c\'est vous qui ne comprenez pas les règles ?',
             ],
             tip: '🎙️ RYTHME : Les quatre premières phrases doivent être dites rapidement, presque mécaniquement — pour créer l\'effet de routine. Puis ralentissez brutalement sur "et le lendemain… tout est revenu à zéro."'
+          },
+          {
+            range: 'Contexte', title: 'Pourquoi cette histoire est différente',
+            tasks: [
+              'Avant de commencer, je dois vous dire quelque chose. Cette vidéo n\'est pas une creepypasta. Ce n\'est pas une fiction.',
+              'Je ne vais pas vous parler d\'un personnage inventé qui rencontre Herobrine. Je ne vais pas vous montrer de faux screenshots retouchés.',
+              'Ce que je vais vous raconter est documenté. Analysé. Partiellement expliqué par des experts.',
+              'Et je dis "partiellement" intentionnellement. Parce qu\'il y a des choses dans cette histoire que l\'explication rationnelle ne couvre pas.',
+              'J\'ai lu l\'intégralité du blog de Soren — plusieurs dizaines de posts, rédigés sur une période d\'un mois. J\'ai vérifié les dates, les coordonnées, les screenshots.',
+              'Tout est cohérent. Trop cohérent pour être fabriqué. Pas assez cohérent pour être un simple bug.',
+              'Alors prenez vos écouteurs. Éteignez les lumières si vous voulez. Et écoutez.',
+            ],
+            tip: '🎙️ MISE EN CONDITIONS : Ce passage installe la crédibilité ET le suspense en même temps. Parlez avec la conviction de quelqu\'un qui a vraiment fait ses recherches.'
           },
           {
             range: 'Présentation', title: 'L\'histoire de Soren',
@@ -1122,6 +1162,7 @@ const SCRIPTS = [
               'Il documente ses parties sur un blog personnel. Pas de chaîne YouTube, pas de Twitch. Juste un blog, avec des captures d\'écran et du texte.',
               'C\'est là qu\'il commence à écrire ce qui lui arrive. Au jour le jour. Avec des screenshots horodatés.',
               'Ce qui rend cette histoire crédible, c\'est la précision de sa documentation. Il note tout. Les coordonnées. Les inventaires. Les seeds.',
+              'Il note même ses propres doutes. Ses remises en question. Les moments où il se dit qu\'il est en train de perdre la tête.',
               'Et ce qu\'il documente… est inexplicable.',
               'Voici son histoire. Dans l\'ordre. Telle qu\'il l\'a vécue.',
             ],
@@ -1141,6 +1182,8 @@ const SCRIPTS = [
               'Il se couche dans son lit ingame. Il sauvegarde. Il quitte.',
               'Le lendemain, il relance. Il est dans son lit. Sa base est là. Tout est normal.',
               'Il joue encore quelques heures. Il descend dans une mine, trouve plusieurs diamants. Il revient, satisfait. Il se couche. Il sauvegarde. Il quitte.',
+              'Dans son blog, il écrit simplement : "Bonne session. Beaucoup de diamants. Je continue demain."',
+              'C\'est la dernière entrée de blog qui ne parle pas de la boucle.',
             ],
             tip: '🎙️ TON : Neutre, descriptif. Pas encore de tension. Le spectateur doit se dire "OK, partie normale". La tension vient après.'
           },
@@ -1153,9 +1196,23 @@ const SCRIPTS = [
               'Ses diamants ne sont pas là. Son fer est revenu à la quantité du premier jour. Son inventaire est comme il l\'avait au soir du premier jour.',
               'Sa mine existe toujours. Les galeries qu\'il a creusées sont là. Mais les ressources qu\'il a ramassées ont disparu.',
               'Soren croit d\'abord à une erreur de sauvegarde. Il recharge la partie. Rien ne change.',
-              'Il remarque quelque chose d\'autre. La date dans le jeu — le nombre de jours joués — est revenus à 2. Comme s\'il avait passé seulement deux jours dans ce monde.',
+              'Il remarque quelque chose d\'autre. La date dans le jeu — le nombre de jours joués — est revenu à 2. Comme s\'il avait passé seulement deux jours dans ce monde.',
+              'Dans son blog, il écrit : "Bug de sauvegarde probable. Je recommence. Pas grave." — Il ne sait pas encore à quel point il a tort.',
             ],
             tip: '🎙️ LIVRAISON : "Ses diamants ne sont pas là." — Pause. "Son fer est revenu." — Pause. Chaque constat doit tomber comme un coup.'
+          },
+          {
+            range: 'Jour 3–4', title: 'Ça recommence',
+            tasks: [
+              'Le quatrième jour, il rejoue. Il refait exactement les mêmes actions. Il retourne dans sa mine. Il ramasse des ressources.',
+              'Cette fois, il prend des précautions. Il place un screenshot de son coffre plein. Il note les coordonnées de chaque ressource ramassée.',
+              'Il se couche. Il quitte. Il respire.',
+              'Le cinquième jour, il relance.',
+              'Réinitialisation. Exactement comme avant. Coffres vides. Compteur à 2. Galeries intactes.',
+              'Soren compare ses screenshots. L\'état du coffre correspond exactement à son coffre du soir du jour 1.',
+              'Ce n\'est pas aléatoire. Ce n\'est pas un crash. Quelque chose ramène systématiquement son inventaire à un état précis. Le même état. À chaque fois.',
+            ],
+            tip: '🎙️ MONTÉE EN TENSION : Ce passage transforme le "bug" en phénomène. Le spectateur commence à comprendre que c\'est systématique.'
           },
           {
             range: 'Jour 5', title: 'Le patron de la boucle',
@@ -1172,7 +1229,40 @@ const SCRIPTS = [
         ]
       },
       {
-        id: 'boucle_escalade', label: 'Partie 3', range: 'L\'escalade', color: 'blue',
+        id: 'boucle_psychologie', label: 'Partie 3', range: 'L\'état mental', color: 'pink',
+        title: 'Soren commence à craquer',
+        days: [
+          {
+            range: 'La fatigue', title: 'Ce que la boucle fait à un être humain',
+            tasks: [
+              'Je veux m\'arrêter une seconde sur quelque chose qu\'on oublie facilement dans ces histoires.',
+              'Soren vit ça. Vraiment. Chaque jour, il relance sa partie en sachant que tout ce qu\'il a fait la veille a disparu.',
+              'C\'est une forme de Sisyphe numérique. Il monte le rocher. Le rocher redescend. Il recommence.',
+              'Dans ses entrées de blog autour du dixième cycle, son écriture change. Elle devient plus courte. Plus sèche. Moins de détails techniques. Plus de questions.',
+              '"Pourquoi ça continue. Pourquoi j\'y retourne. Je sais que ça va recommencer. Je retourne quand même."',
+              'Il parle à ses amis de ce qui lui arrive. Personne ne le croit. On lui dit de réinstaller le jeu. Il l\'a déjà fait. La boucle continue.',
+              'Il est seul avec ça. Et pourtant, chaque soir, il se reconnecte. Parce que quelque chose dans le monde de Soren l\'attire. Quelque chose qu\'il ne sait pas encore nommer.',
+            ],
+            tip: '🎙️ EMPATHIE : Ce passage humanise Soren. Le spectateur doit ressentir sa frustration et son obsession. Parlez avec douceur, pas avec dramatisme.'
+          },
+          {
+            range: 'Le doute', title: 'Est-ce que c\'est lui le problème ?',
+            tasks: [
+              'À partir du cycle 8, Soren commence à douter de lui-même.',
+              'Peut-être qu\'il confond les sauvegardes. Peut-être qu\'il relance la mauvaise world. Peut-être que sa mémoire lui joue des tours.',
+              'Il installe un logiciel d\'enregistrement. Il filme chaque session. Il horodate tout.',
+              'Le cycle 9. Il joue pendant trois heures. Il ramasse des diamants, fabrique une armure complète. Il se couche. Il quitte.',
+              'Il a la vidéo. Il a les screenshots. Il a les logs. Tout est là. Proof.',
+              'Le lendemain, il relance. Réinitialisation. Il compare la vidéo et l\'état actuel du coffre. Strictement identiques au soir du premier jour.',
+              'Ce n\'est pas lui. Ce n\'est pas sa mémoire. Ce n\'est pas une erreur humaine.',
+              'Quelque chose dans ce monde ramène son inventaire en arrière. Et il n\'y a aucune explication logique à ça.',
+            ],
+            tip: '🎙️ ESCALADE : Ce passage est le pivot. Soren avait un doute sur lui-même. Il ne l\'a plus. Et c\'est là que ça devient vraiment inquiétant.'
+          },
+        ]
+      },
+      {
+        id: 'boucle_escalade', label: 'Partie 4', range: 'L\'escalade', color: 'blue',
         title: 'Briser la boucle',
         days: [
           {
@@ -1189,6 +1279,19 @@ const SCRIPTS = [
             tip: '🎙️ STRUCTURE : Listez les expériences comme un scientifique. Hypothèse, test, résultat. Cette rigueur renforce l\'immersion.'
           },
           {
+            range: 'La carte', title: 'Soren cartographie la boucle',
+            tasks: [
+              'Cycle 12. Soren change d\'approche. Il n\'essaie plus de briser la boucle — il essaie de la comprendre.',
+              'Il fabrique une carte dans le jeu. Il explore méthodiquement dans toutes les directions.',
+              'Il remarque quelque chose d\'étrange. Certaines zones du monde semblent légèrement différentes à chaque cycle.',
+              'Pas l\'inventaire. Pas les structures. Mais des détails infimes. Un arbre qui a grandi d\'un bloc. Une fleur qui a changé de position. Un animal qui a disparu.',
+              'Comme si le monde continuait d\'évoluer légèrement — dans ses parties organiques — mais que son inventaire restait bloqué.',
+              'Dans son blog il écrit : "Ce monde n\'est pas en pause. Il continue sans moi. Comme si j\'étais l\'anomalie. Pas la boucle."',
+              'Cette phrase va le hanter pendant le reste de l\'expérience.',
+            ],
+            tip: '🎙️ PHILOSOPHIQUE : Ce passage introduit l\'idée troublante que Soren est peut-être l\'élément anormal dans son propre monde. Laissez cette idée s\'installer.'
+          },
+          {
             range: 'Le message', title: 'Le signe dans les blocs',
             tasks: [
               'Après dix cycles de boucle, Soren fait quelque chose d\'impulsif.',
@@ -1203,6 +1306,19 @@ const SCRIPTS = [
             tip: '🎙️ DRAMATISATION : "OUI." — Dites ce mot seul. Une pause avant. Une pause après. C\'est le pic de tension de cette vidéo.'
           },
           {
+            range: 'Après le OUI', title: 'Les heures qui suivent',
+            tasks: [
+              'Soren ne quitte pas le jeu immédiatement après avoir vu le OUI.',
+              'Il reste connecté. Il attend. Il fixe les deux blocs de laine noire.',
+              'Rien ne se passe. Aucun autre changement. Le monde reste calme. Les mobs font leur routine. Le soleil tourne.',
+              'Il essaie d\'ajouter quelque chose à côté du OUI. Il place un bloc de laine blanche avec un point d\'interrogation. Une question.',
+              'Il quitte. Il relance le lendemain.',
+              'Son point d\'interrogation est là. Mais aucune nouvelle réponse. Juste le OUI. Juste les deux lettres noires, immobiles, dans l\'herbe.',
+              'Dans son blog, il écrit une seule ligne : "Il m\'a répondu. Mais il ne dit rien de plus. Peut-être que OUI était tout ce qu\'il voulait dire."',
+            ],
+            tip: '🎙️ TENSION SUSPENDUE : Ce passage prolonge l\'angoisse après le pic. Ne pas couper trop vite après le "OUI". Le silence de la réponse est aussi important que la réponse elle-même.'
+          },
+          {
             range: 'La boucle se brise', title: 'Le dernier cycle',
             tasks: [
               'Après la réponse, Soren essaie une dernière chose.',
@@ -1212,13 +1328,46 @@ const SCRIPTS = [
               'Il quitte le jeu. Le lendemain, il relance.',
               'Ses ressources sont là. Toutes. Son compteur de jours n\'a pas reculé.',
               'La boucle est brisée. En détruisant le lit, il a supprimé le déclencheur. La boucle n\'a plus de prise sur lui.',
+              'Il écrit dans son blog : "Brisée. Mais je ne sais pas si je suis soulagé ou si je viens de faire quelque chose d\'irréparable."',
             ],
-            tip: '🎙️ LIBÉRATION : Ce passage doit sonner comme une victoire. Après toute la tension accumulée, laissez filtrer un peu de soulagement dans votre voix.'
+            tip: '🎙️ LIBÉRATION AMBIGUË : Ce passage doit sonner comme une victoire teintée d\'un malaise. La boucle est brisée, mais quelque chose est différent. Laissez cette ambiguïté dans la voix.'
           },
         ]
       },
       {
-        id: 'boucle_explication', label: 'Partie 4', range: 'La vérité', color: 'amber',
+        id: 'boucle_apres', label: 'Partie 5', range: 'Le lendemain', color: 'green',
+        title: 'Le monde sans boucle',
+        days: [
+          {
+            range: 'Le retour', title: 'Ce que Soren trouve quand il revient',
+            tasks: [
+              'Le monde de Soren continue normalement après la fin de la boucle. Il joue plusieurs semaines sans incident.',
+              'Mais il y a quelque chose qu\'il note dans son blog, une semaine après avoir brisé la boucle.',
+              '"Ce monde me semble différent. Je ne saurais pas l\'expliquer autrement. Avant, quand je me connectais, j\'avais l\'impression d\'arriver quelque part. Maintenant j\'ai l\'impression de juste jouer."',
+              'Il continue de jouer. Il construit. Il avance. Mais quelque chose dans l\'atmosphère du monde a changé.',
+              'Comme si, en brisant le lit, il avait aussi brisé quelque chose d\'autre. Une présence qu\'il avait fini par trouver rassurante sans le réaliser.',
+              'La boucle l\'enfermait. Mais peut-être qu\'elle était aussi ce qui lui donnait l\'impression d\'être attendu.',
+              'Il écrit : "Un monde qui se réinitialise pour toi, c\'est peut-être un monde qui refuse que tu partes."',
+            ],
+            tip: '🎙️ MÉLANCOLIE : Ce passage doit être doux et mélancolique. Soren a gagné sa liberté. Mais il réalise que la boucle avait peut-être quelque chose de précieux en elle.'
+          },
+          {
+            range: 'La question du lit', title: 'Pourquoi le lit ?',
+            tasks: [
+              'Je veux revenir une seconde sur le lit. Parce que dans Minecraft, le lit n\'est pas juste un meuble.',
+              'Dans Minecraft, dormir dans un lit change votre point de réapparition. C\'est votre ancre dans le monde.',
+              'Si vous mourez sans lit, vous retournez au spawn original. Avec un lit, vous revenez là où vous avez dormi.',
+              'Le lit vous attache au monde. Il dit : "C\'est ici que tu vis. C\'est ici que tu recommences."',
+              'Soren dormait dans son lit. Et quelque chose utilisait ce geste — ce geste d\'appartenance, d\'attachement — comme déclencheur.',
+              'Chaque fois qu\'il disait "je suis chez moi", quelque chose répondait en réinitialisant son monde.',
+              'Comme si le fait d\'appartenir quelque part déclenchait un mécanisme. Une punition. Ou peut-être un test.',
+            ],
+            tip: '🎙️ SYMBOLIQUE : Ce passage donne une profondeur métaphorique à l\'histoire. Le lit = appartenance = déclencheur. Parlez lentement, laissez le spectateur faire les connexions.'
+          },
+        ]
+      },
+      {
+        id: 'boucle_explication', label: 'Partie 6', range: 'La vérité', color: 'amber',
         title: 'Comprendre ce qui s\'est passé',
         days: [
           {
@@ -1232,6 +1381,19 @@ const SCRIPTS = [
               'Quant aux messages de laine noire qui lui avaient répondu OUI ? Soren a fouillé ses logs de connexion. Une autre session du jeu avait été ouverte depuis son propre ordinateur, la nuit précédente. Son jeune frère, apparemment.',
             ],
             tip: '🎙️ DÉFLATION CONTRÔLÉE : Donnez l\'explication rationnelle honnêtement. Mais gardez quelque chose en réserve pour la suite.'
+          },
+          {
+            range: 'La réaction du public', title: 'Ce que les gens ont dit',
+            tasks: [
+              'Quand Soren a publié son histoire complète sur son blog, la réaction a été… massive. Pour un blog sans promotion, sans réseau, sans algorithme.',
+              'Des milliers de commentaires. Des joueurs qui disaient avoir vécu des choses similaires. Des développeurs indépendants qui proposaient des analyses techniques.',
+              'Mais aussi, parmi les commentaires, une catégorie que Soren n\'attendait pas : des gens qui ne voulaient pas d\'explication.',
+              '"Ne me dis pas que c\'était un bug. J\'avais besoin que ce soit autre chose." Un commentaire parmi des dizaines du même type.',
+              'Des gens qui avaient lu l\'histoire et qui préféraient la version inexpliquée. Qui trouvaient quelque chose de réconfortant dans l\'idée qu\'un monde puisse refuser qu\'on le quitte.',
+              'Ce n\'est pas la première fois que ça arrive avec des histoires Minecraft. Mais c\'est la première fois que j\'ai compris pourquoi.',
+              'Parce que Minecraft est un monde que vous avez construit. Et l\'idée qu\'il puisse vous manquer, lui aussi — même si c\'est absurde — dit quelque chose sur ce que ce jeu représente pour nous.',
+            ],
+            tip: '🎙️ OUVERTURE : Ce passage sort de l\'histoire individuelle de Soren pour parler de quelque chose d\'universel. Changez légèrement de registre — plus chaleureux, plus ouvert.'
           },
           {
             range: 'Ce qui reste', title: 'Ce que la technique n\'explique pas',
@@ -1250,9 +1412,21 @@ const SCRIPTS = [
         ]
       },
       {
-        id: 'boucle_conclusion', label: 'Partie 5', range: 'Conclusion', color: 'pink',
+        id: 'boucle_conclusion', label: 'Partie 7', range: 'Conclusion', color: 'pink',
         title: 'Clôture',
         days: [
+          {
+            range: 'La vraie question', title: 'Ce que cette histoire dit sur nous',
+            tasks: [
+              'Je vais vous poser une question. Et je veux que vous y répondiez honnêtement, dans votre tête.',
+              'Est-ce que vous avez déjà eu peur de perdre un monde Minecraft ? Pas peur de mourir dans le jeu. Peur de perdre le monde. Le fichier. La save.',
+              'Est-ce que vous avez déjà sauvegardé compulsivement, ou hésité à charger une partie pour ne pas risquer de la corrompre ?',
+              'Si oui — et je pense que beaucoup d\'entre vous savent exactement de quoi je parle — vous comprenez déjà ce qui a retenu Soren dans sa boucle.',
+              'Ce n\'était pas le bug. Ce n\'était pas le mystère. C\'était l\'attachement. C\'était un monde qu\'il avait construit, et qu\'il ne voulait pas quitter, même quand le quitter lui coûtait quelque chose.',
+              'La boucle n\'était peut-être pas une prison. C\'était peut-être le prix qu\'il payait pour rester.',
+            ],
+            tip: '🎙️ ADRESSE DIRECTE : Posez les questions face caméra, avec des silences entre elles. Le spectateur doit se sentir interpellé personnellement.'
+          },
           {
             range: 'Conclusion', title: 'Le mot de fin — la boucle du temps',
             tasks: [
@@ -1263,8 +1437,9 @@ const SCRIPTS = [
               'La boucle de Soren n\'était peut-être pas un bug. C\'était peut-être le jeu qui lui montrait, très littéralement, ce qu\'il fait depuis des années sans s\'en rendre compte.',
               'Recommencer. Encore et encore. Parce que le voyage vaut plus que l\'arrivée.',
               'Et si vous vous êtes déjà demandé pourquoi vous relancez une nouvelle partie alors que vous n\'avez pas fini la précédente… vous connaissez déjà la réponse.',
+              'Imaginons un scénario. Vous lancez Minecraft.',
             ],
-            tip: '🎙️ CONCLUSION : Cette fin est philosophique et bienveillante. Après toute la tension, terminez sur une note douce et réfléchie. Sourire discret dans la voix.'
+            tip: '🎙️ BOUCLE NARRATIVE : La dernière réplique doit être exactement la même que la toute première phrase de la vidéo. Même intonation. Même vitesse. Puis coupez direct. Le spectateur comprend. C\'est tout.'
           },
         ]
       },
